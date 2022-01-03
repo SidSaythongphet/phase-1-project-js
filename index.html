@@ -4,11 +4,44 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <link rel="stylesheet" href="./stylesheet/styles.css">
     <title>Two Minutes A Day Journal</title>
 </head>
 <body>
+    <nav>
+        <div class="nav-wrapper deep-orange darken-4">
+          <a href="#!" class="brand-logo center">Two Minutes A Day</a>
+          <ul class="left hide-on-med-and-down">
+            <li class="active"><a href="#" id="home-link">Home</a></li>
+            <li><a href="#" id="journal-link">Journal</a></li>
+            <li><a href="#"id="entries-link">Entries</a></li>
+          </ul>
+        </div>
+      </nav>
+            
+            
     <div id="main">
-        <h1>Two Minutes A Day Journal</h1>
+
+        <ul class="collapsible expandable">
+            <li>
+              <div class="collapsible-header"><i class="material-icons">filter_drama</i>First</div>
+              <div class="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
+            </li>
+            <li>
+              <div class="collapsible-header"><i class="material-icons">place</i>Second</div>
+              <div class="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
+            </li>
+            <li>
+              <div class="collapsible-header"><i class="material-icons">whatshot</i>Third</div>
+              <div class="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
+            </li>
+          </ul>
     </div>
 
     <script src='javascript/index.js'></script>
