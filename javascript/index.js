@@ -97,7 +97,7 @@ const renderPastEntryContainer = () => {
 
 /** Start Up**/
 document.addEventListener('DOMContentLoaded', () => {
-    // loadHome()
+    loadHome()
     homePageEvent()
     jouralPageEvent()
     entriesPageEvent()
