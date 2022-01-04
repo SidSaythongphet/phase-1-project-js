@@ -1,4 +1,6 @@
 /** Global Variables**/
+let startCount = 2
+let count = startCount * 60
 
 
 
@@ -11,6 +13,8 @@ const journalLink = () => document.getElementById('journal-link')
 const entriesLink = () => document.getElementById('entries-link')
 const leftDiv = () => document.querySelector('.col.s3')
 const rightDiv = () => document.querySelector('.col.s9')
+const timer = () => document.getElementById('counter')
+const start = () => document.getElementById('start')
 const pastEntryContainer = () => document.querySelector('.collapsible.expandable')
 
 /** Event Listners**/
@@ -24,6 +28,10 @@ const jouralPageEvent = () => {
 
 const entriesPageEvent = () => {
     entriesLink().addEventListener('click', loadEntries)
+}
+
+const startEvent = () => {
+    start().addEventListener('click', startCountDown)
 }
 
 /** Event Handlers**/
@@ -47,7 +55,11 @@ const loadHome = (event) => {
 const loadJournal = (event) => {
     event.preventDefault()
     clearDivs()
+    createLayout()
+    renderTimer()
+    renderStart()
     renderJournalBox()
+    startEvent()
 
 }
 
@@ -72,6 +84,12 @@ const expandEntries = () => {
     })
 }
 
+const startCountDown = () => {
+    start().setAttribute('hidden', 'true')
+    countDown()
+    
+}
+
 /** Miscellaneous**/
 const clearDivs = () => {
     mainDiv().innerHTML = ''
@@ -90,12 +108,12 @@ const createLayout = () => {
 }
 
 const renderJournalBox = () => {
-    const journalBox = document.createElement('textarea')
+    const journalBox = document.createElement('input')
     journalBox.setAttribute('type', 'text')
     journalBox.setAttribute('class', 'entry')
     journalBox.setAttribute('placeholder', 'What is on your mind?')
 
-    mainDiv().appendChild(journalBox)    
+    rightDiv().appendChild(journalBox)    
 }
 
 const renderEntriesHeader = () => {
@@ -156,11 +174,89 @@ const fullDate = () => {
     return today.toDateString()
 }
 
+const countDown = () => {
+    const minutes = Math.floor(count / 60)
+    let seconds = count % 60
+
+    seconds = seconds < 10 ? '0' + seconds : seconds
+
+    setTimeout(() => {
+        if (count >= 0) {
+            count--
+            timer().innerText = `${minutes}:${seconds}`
+            countDown()
+        } else {
+            timer().innerHTML = '<h2>Well done! You journaled for 2 minutes!</h2>'
+
+        }
+    }, 1000);
+}
+
+const renderTimer = () => {
+    const timer = document.createElement('h5')
+    timer.setAttribute('id', 'counter')
+    timer.setAttribute('class', 'center')
+    timer.innerText = '2:00'
+    mainDiv().appendChild(timer)
+}
+
+const displayCount = () => {
+    timer().innerText = `${minutes}:${seconds}`
+    
+}
+
+const renderStart = () => {
+    const btn = document.createElement('button')
+    btn.setAttribute('id', 'start')
+    btn.setAttribute('class', 'center')
+    btn.innerText = 'Start'
+    mainDiv().appendChild(btn)
+}
+
 /** Start Up**/
 document.addEventListener('DOMContentLoaded', () => {
     loadHome()
     homePageEvent()
     jouralPageEvent()
     entriesPageEvent()
+
     
 })
+
+
+// let count = 0
+
+
+// const renderTimer = () => {
+//     const timer = document.createElement('div')
+//     timer.setAttribute('id', 'counter')
+//     timer.innerText = 30
+//     mainDiv().appendChild(timer)
+// }
+
+// const displayCount = () => {
+//     timer().innerText = count
+// }
+
+// const startCountDown = () => {
+//     let count = timer().innerText
+//     countDown()
+// }
+
+// const startEvent = () => {
+//     start().addEventListener('click', startCountDown)
+// }
+
+// const countDown = () => {
+//     console.log(count)
+//     setTimeout(() => {
+//         if (count < 0) {
+//             count--
+//             displayCount()
+//             countDown()
+//         } else {
+//             console.log("done")
+//         }
+//     }, 1000);
+// }
+
