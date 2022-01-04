@@ -1,6 +1,6 @@
 body {
     background-image: url('https://media.istockphoto.com/photos/brown-smooth-wood-surface-picture-id1183955880?k=20&m=1183955880&s=612x612&w=0&h=J6ZQc_eP2IXyBmtG2Fl6ZIIujlZjubbzpMphqN8f9a8=');
-
+    background-attachment: fixed;
     background-color: teal;
     background-position: center;
     background-size: cover;
@@ -15,8 +15,38 @@ body {
     margin-top: 10px;
 }
 
+/** Entries Page**/
+
 .collapsible.expandable {
-    align-content: center;
-    border-left: 50px solid rosybrown;
-    margin: 10rem;
+    border-left: 50px solid burlywood;
+    border-style: groove;
+}
+
+.collapsible-header {
+    background-color: burlywood;
+}
+
+.collapsible-body {
+    background-color: papayawhip;
+}
+
+h4 {
+    background-color: teal;
+}
+
+.collection-item {
+    background-color: teal;
+    color: black;
+}
+
+.collection.col.s3 {
+    padding-right: 100px;
+    padding-left: 50px;
+    padding-top: 25px;
+    border: none;
+}
+
+.col.s9 {
+    padding-top: 100px;
+    padding-right: 100px;
 }
