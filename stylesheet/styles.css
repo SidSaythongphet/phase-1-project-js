@@ -24,13 +24,14 @@ body {
 
 .collapsible-header {
     background-color: burlywood;
+    padding: 10px;
 }
 
 .collapsible-body {
     background-color: papayawhip;
 }
 
-h4 {
+#month-header {
     background-color: teal;
 }
 
@@ -46,7 +47,7 @@ h4 {
     border: none;
 }
 
-.col.s9 {
+.col.s7 {
     padding-top: 100px;
     padding-right: 100px;
 }

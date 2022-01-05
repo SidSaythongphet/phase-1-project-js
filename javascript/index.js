@@ -1,8 +1,8 @@
 /** Global Variables**/
 let startCount = 2
 let count = startCount * 60
-
-
+const BASE_URL = 'http://localhost:3000'
+let entries = []
 
 /** Node Getters**/
 const mainBody = () => document.querySelector('body')
@@ -12,7 +12,7 @@ const homeLink = () => document.getElementById('home-link')
 const journalLink = () => document.getElementById('journal-link')
 const entriesLink = () => document.getElementById('entries-link')
 const leftDiv = () => document.querySelector('.col.s3')
-const rightDiv = () => document.querySelector('.col.s9')
+const rightDiv = () => document.querySelector('.col.s7')
 const timer = () => document.getElementById('counter')
 const start = () => document.getElementById('start')
 const pastEntryContainer = () => document.querySelector('.collapsible.expandable')
@@ -60,7 +60,6 @@ const loadJournal = (event) => {
     renderStart()
     renderJournalBox()
     startEvent()
-
 }
 
 const loadEntries = (event) => {
@@ -71,7 +70,7 @@ const loadEntries = (event) => {
     renderEntriesHeader()
     renderPastEntryContainer()
     renderMonthsContainer()
-    renderPastEntries()
+    loadPastEntry()
 }
 
 const expandEntries = () => {
@@ -86,8 +85,15 @@ const expandEntries = () => {
 
 const startCountDown = () => {
     start().setAttribute('hidden', 'true')
-    countDown()
-    
+    countDown() 
+}
+/** Requests **/
+const loadJournalLogs = () => {
+    fetch(BASE_URL + '/entries')
+        .then(resp => resp.json())
+        .then(data => {
+            entries = data
+        })
 }
 
 /** Miscellaneous**/
@@ -101,18 +107,24 @@ const createLayout = () => {
     const rightColumn = document.createElement('div')
 
     leftColumn.setAttribute('class', 'col s3')
-    rightColumn.setAttribute('class', 'col s9')
+    rightColumn.setAttribute('class', 'col s7')
 
     secondDiv().appendChild(leftColumn)
     secondDiv().appendChild(rightColumn)
 }
 
 const renderJournalBox = () => {
+    const today = document.createElement('h5')
     const journalBox = document.createElement('input')
+
+    today.setAttribute('id', 'today')
+    today.innerText = fullDate()
+
     journalBox.setAttribute('type', 'text')
     journalBox.setAttribute('class', 'entry')
     journalBox.setAttribute('placeholder', 'What is on your mind?')
 
+    rightDiv().appendChild(today)
     rightDiv().appendChild(journalBox)    
 }
 
@@ -129,28 +141,29 @@ const renderPastEntryContainer = () => {
     rightDiv().appendChild(entryContainer)
 }
 
-const renderPastEntries = () => {
-    const li = document.createElement('li')
-    const header = document.createElement('div')
-    const body = document.createElement('div')
-    const span = document.createElement('span')
+const loadPastEntry = () => {
+    entries.forEach(entry => {
+        const li = document.createElement('li')
+        const header = document.createElement('div')
+        const body = document.createElement('div')
+        const span = document.createElement('span')
     
-    header.setAttribute('class', 'collapsible-header')
-    header.innerText = fullDate()
-    body.setAttribute('class', 'collapsible-body')
-    span.innerText = 'Journal entry'
+        header.setAttribute('class', 'collapsible-header')
+        header.innerText = entry.date
+        body.setAttribute('class', 'collapsible-body')
+        span.innerText = entry.log
 
-    pastEntryContainer().appendChild(li)
-    li.appendChild(header)
-    li.appendChild(body)
-    body.appendChild(span)
-
+        pastEntryContainer().appendChild(li)
+        li.appendChild(header)
+        li.appendChild(body)
+        body.appendChild(span)
+    })
     expandEntries()
 }
 
 const renderMonthsContainer = () => {
-    // const monthContainer = document.createElement('div')
     const monthHeader = document.createElement('h4')
+    monthHeader.setAttribute('id', 'month-header')
     leftDiv().setAttribute('class', 'collection col s3')
     monthHeader.innerText = 'Entry by Month'
     leftDiv().appendChild(monthHeader)
@@ -193,7 +206,7 @@ const countDown = () => {
 }
 
 const renderTimer = () => {
-    const timer = document.createElement('h5')
+    const timer = document.createElement('h4')
     timer.setAttribute('id', 'counter')
     timer.setAttribute('class', 'center')
     timer.innerText = '2:00'
@@ -201,8 +214,7 @@ const renderTimer = () => {
 }
 
 const displayCount = () => {
-    timer().innerText = `${minutes}:${seconds}`
-    
+    timer().innerText = `${minutes}:${seconds}`  
 }
 
 const renderStart = () => {
@@ -215,48 +227,10 @@ const renderStart = () => {
 
 /** Start Up**/
 document.addEventListener('DOMContentLoaded', () => {
+    loadJournalLogs()
     loadHome()
     homePageEvent()
     jouralPageEvent()
     entriesPageEvent()
-
-    
 })
-
-
-// let count = 0
-
-
-// const renderTimer = () => {
-//     const timer = document.createElement('div')
-//     timer.setAttribute('id', 'counter')
-//     timer.innerText = 30
-//     mainDiv().appendChild(timer)
-// }
-
-// const displayCount = () => {
-//     timer().innerText = count
-// }
-
-// const startCountDown = () => {
-//     let count = timer().innerText
-//     countDown()
-// }
-
-// const startEvent = () => {
-//     start().addEventListener('click', startCountDown)
-// }
-
-// const countDown = () => {
-//     console.log(count)
-//     setTimeout(() => {
-//         if (count < 0) {
-//             count--
-//             displayCount()
-//             countDown()
-//         } else {
-//             console.log("done")
-//         }
-//     }, 1000);
-// }
 
