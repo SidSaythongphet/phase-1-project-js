@@ -12,7 +12,25 @@ body {
     background-color: rgb(15, 142, 142);
     border-style: ridge;
     border-color:teal;
-    margin-top: 10px;
+    margin-top: 25px;
+    height: 200px;
+    width: 850px;
+}
+
+/** Journal Page**/
+#start {
+    margin-left: 100px;
+    margin-bottom: 100px;
+    font-size: 50px;
+    border-width: thick;
+    text-align: center;
+}
+
+#entry {
+    background-color: blanchedalmond;
+    color: black;
+    height: 800px;
+    width: 750px;;
 }
 
 /** Entries Page**/

@@ -13,11 +13,14 @@ const journalLink = () => document.getElementById('journal-link')
 const entriesLink = () => document.getElementById('entries-link')
 const leftDiv = () => document.querySelector('.col.s3')
 const rightDiv = () => document.querySelector('.col.s7')
+const textBox = () => document.getElementById('entry')
+const submit = () => document.getElementById('submit')
 const timer = () => document.getElementById('counter')
 const start = () => document.getElementById('start')
 const pastEntryContainer = () => document.querySelector('.collapsible.expandable')
 
 /** Event Listners**/
+
 const homePageEvent = () => {
     homeLink().addEventListener('click', loadHome)
 }
@@ -84,10 +87,13 @@ const expandEntries = () => {
 }
 
 const startCountDown = () => {
+    textBox().removeAttribute('disabled', 'true')
     start().setAttribute('hidden', 'true')
     countDown() 
 }
+
 /** Requests **/
+
 const loadJournalLogs = () => {
     fetch(BASE_URL + '/entries')
         .then(resp => resp.json())
@@ -97,6 +103,7 @@ const loadJournalLogs = () => {
 }
 
 /** Miscellaneous**/
+
 const clearDivs = () => {
     mainDiv().innerHTML = ''
     secondDiv().innerHTML = ''
@@ -114,18 +121,37 @@ const createLayout = () => {
 }
 
 const renderJournalBox = () => {
+    const form = document.createElement('form')
+    const btn = document.createElement('button')
     const today = document.createElement('h5')
-    const journalBox = document.createElement('input')
+    const label = document.createElement('label')
+    const journalBox = document.createElement('textarea')
+
+    form.setAttribute('name', 'entry')
+    form.setAttribute('method', 'post')
+
+    btn.setAttribute('type', 'submit')
+    btn.setAttribute('id', 'submit')
+    btn.setAttribute('class', 'center')
+    btn.setAttribute('hidden', 'true')
+    btn.innerText = 'Submit'
 
     today.setAttribute('id', 'today')
     today.innerText = fullDate()
 
-    journalBox.setAttribute('type', 'text')
-    journalBox.setAttribute('class', 'entry')
-    journalBox.setAttribute('placeholder', 'What is on your mind?')
+    label.setAttribute('for', 'entry')
+    label.innerText = 'What is on your mind?'
 
-    rightDiv().appendChild(today)
-    rightDiv().appendChild(journalBox)    
+    journalBox.setAttribute('id', 'entry')
+    journalBox.setAttribute('name', 'entry')
+    journalBox.setAttribute('placeholder', 'Let\'s write')
+    journalBox.setAttribute('disabled', 'true')
+
+    rightDiv().appendChild(form)
+    form.appendChild(btn)
+    form.appendChild(today)
+    form.appendChild(label)
+    form.appendChild(journalBox)    
 }
 
 const renderEntriesHeader = () => {
@@ -151,7 +177,7 @@ const loadPastEntry = () => {
         header.setAttribute('class', 'collapsible-header')
         header.innerText = entry.date
         body.setAttribute('class', 'collapsible-body')
-        span.innerText = entry.log
+        span.innerText = entry.log + '...'
 
         pastEntryContainer().appendChild(li)
         li.appendChild(header)
@@ -194,13 +220,14 @@ const countDown = () => {
     seconds = seconds < 10 ? '0' + seconds : seconds
 
     setTimeout(() => {
-        if (count >= 0) {
+        if (count > 0) {
             count--
             timer().innerText = `${minutes}:${seconds}`
             countDown()
         } else {
             timer().innerHTML = '<h2>Well done! You journaled for 2 minutes!</h2>'
-
+            textBox().setAttribute('disabled', 'true')
+            submit().removeAttribute('hidden', 'true')
         }
     }, 1000);
 }
@@ -220,12 +247,13 @@ const displayCount = () => {
 const renderStart = () => {
     const btn = document.createElement('button')
     btn.setAttribute('id', 'start')
-    btn.setAttribute('class', 'center')
+
     btn.innerText = 'Start'
     mainDiv().appendChild(btn)
 }
 
 /** Start Up**/
+
 document.addEventListener('DOMContentLoaded', () => {
     loadJournalLogs()
     loadHome()
