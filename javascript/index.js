@@ -11,8 +11,8 @@ const secondDiv = () => document.getElementById('second')
 const homeLink = () => document.getElementById('home-link')
 const journalLink = () => document.getElementById('journal-link')
 const entriesLink = () => document.getElementById('entries-link')
-const leftDiv = () => document.querySelector('.col.s3')
-const rightDiv = () => document.querySelector('.col.s7')
+const leftDiv = () => document.querySelector('.col.s2')
+const rightDiv = () => document.querySelector('.col.s8')
 const textBox = () => document.getElementById('entry')
 const form = () => document.getElementsByName('form')
 const submit = () => document.getElementById('submit')
@@ -45,15 +45,16 @@ const loadHome = (event) => {
         event.preventDefault()
     }
     clearDivs()
+    createLayout()
     const h1 = document.createElement('h1')
     const p = document.createElement('p')
     h1.innerText = 'Two Minutes A Day Journal'
     p.innerText = 'The Two-Minute Rule states “When you start a new habit, it should take less than two minutes to do.”'
-    h1.className = 'center-align'
+    // h1.className = 'center-align'
     p.className = 'center-align'
 
     mainDiv().appendChild(h1)
-    mainDiv().appendChild(p)
+    rightDiv().appendChild(p)
 }
 
 const loadJournal = (event) => {
@@ -138,8 +139,8 @@ const createLayout = () => {
     const leftColumn = document.createElement('div')
     const rightColumn = document.createElement('div')
 
-    leftColumn.setAttribute('class', 'col s3')
-    rightColumn.setAttribute('class', 'col s7')
+    leftColumn.setAttribute('class', 'col s2')
+    rightColumn.setAttribute('class', 'col s8')
 
     secondDiv().appendChild(leftColumn)
     secondDiv().appendChild(rightColumn)
@@ -217,7 +218,7 @@ const loadPastEntry = () => {
 const renderMonthsContainer = () => {
     const monthHeader = document.createElement('h4')
     monthHeader.setAttribute('id', 'month-header')
-    leftDiv().setAttribute('class', 'collection col s3')
+    leftDiv().setAttribute('class', 'collection col s2')
     monthHeader.innerText = 'Entry by Month'
     leftDiv().appendChild(monthHeader)
 
@@ -252,7 +253,7 @@ const countDown = () => {
             timer().innerText = `${minutes}:${seconds}`
             countDown()
         } else {
-            timer().innerHTML = '<h2>Well done! You journaled for 2 minutes!</h2>'
+            timer().innerHTML = '<h3>Well done! You journaled for 2 minutes!</h3>'
             textBox().setAttribute('disabled', 'true')
             submit().removeAttribute('hidden', 'true')
         }
