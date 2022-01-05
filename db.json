@@ -1,9 +1,14 @@
 {
-    "entries": [
-        {
-            "date": "Tue Jan 4, 2022",
-            "log": "Today I start my habit of writing for atleast 2 minutes per day.",
-            "id": 1
-        }
-    ]
+  "entries": [
+    {
+      "entryDate": "Tue Jan 4, 2022",
+      "log": "Today I start my habit of writing for atleast 2 minutes per day.",
+      "id": 1
+    },
+    {
+      "entryDate": "Wed Jan 05 2022",
+      "log": "Today is day three of working on this web page. I have successfully applied a post method so once this text is submitted, it will be published onto the entries page. This has stumped me for a while, but I able to figure it out eventually",
+      "id": 2
+    }
+  ]
 }

@@ -14,6 +14,7 @@ const entriesLink = () => document.getElementById('entries-link')
 const leftDiv = () => document.querySelector('.col.s3')
 const rightDiv = () => document.querySelector('.col.s7')
 const textBox = () => document.getElementById('entry')
+const form = () => document.getElementsByName('form')
 const submit = () => document.getElementById('submit')
 const timer = () => document.getElementById('counter')
 const start = () => document.getElementById('start')
@@ -92,6 +93,30 @@ const startCountDown = () => {
     countDown() 
 }
 
+const submitJournalLog = (event) => {
+    event.preventDefault()
+
+    const newEntry = {
+        "entryDate": fullDate(),
+        "log": textBox().value,
+        "id": ''
+    }
+    console.log(newEntry)
+
+    fetch(BASE_URL + '/entries', {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+        },
+        body: JSON.stringify(newEntry),
+    })
+        .then(resp => resp.json())
+        .then(data => {
+            entries.push(data)
+        })
+}
+
 /** Requests **/
 
 const loadJournalLogs = () => {
@@ -152,6 +177,8 @@ const renderJournalBox = () => {
     form.appendChild(today)
     form.appendChild(label)
     form.appendChild(journalBox)    
+
+    form.addEventListener('submit', submitJournalLog)
 }
 
 const renderEntriesHeader = () => {
@@ -175,7 +202,7 @@ const loadPastEntry = () => {
         const span = document.createElement('span')
     
         header.setAttribute('class', 'collapsible-header')
-        header.innerText = entry.date
+        header.innerText = entry.entryDate
         body.setAttribute('class', 'collapsible-body')
         span.innerText = entry.log + '...'
 
@@ -236,7 +263,7 @@ const renderTimer = () => {
     const timer = document.createElement('h4')
     timer.setAttribute('id', 'counter')
     timer.setAttribute('class', 'center')
-    timer.innerText = '2:00'
+    timer.innerText = startCount + ':00'
     mainDiv().appendChild(timer)
 }
 
