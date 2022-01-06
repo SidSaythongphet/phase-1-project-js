@@ -18,6 +18,7 @@ const rightDiv = () => document.querySelector('.col.s8')
 const textBox = () => document.getElementById('entry')
 const form = () => document.getElementsByName('form')
 const submit = () => document.getElementById('submit')
+const reset = () => document.getElementById('reset')
 const timer = () => document.getElementById('counter')
 const start = () => document.getElementById('start')
 const pastEntryContainer = () => document.querySelector('.collapsible.expandable')
@@ -189,7 +190,8 @@ const createLayout = () => {
 
 const renderJournalBox = () => {
     const form = document.createElement('form')
-    const btn = document.createElement('button')
+    const submit = document.createElement('button')
+    const reset = document.createElement('button')
     const today = document.createElement('h5')
     const label = document.createElement('label')
     const journalBox = document.createElement('textarea')
@@ -197,11 +199,16 @@ const renderJournalBox = () => {
     form.setAttribute('name', 'entry')
     form.setAttribute('method', 'post')
 
-    btn.setAttribute('type', 'submit')
-    btn.setAttribute('id', 'submit')
-    btn.setAttribute('class', 'center')
-    btn.setAttribute('hidden', 'true')
-    btn.innerText = 'Submit'
+    submit.setAttribute('type', 'submit')
+    submit.setAttribute('id', 'submit')
+    submit.setAttribute('class', 'center')
+    submit.setAttribute('hidden', 'true')
+    submit.innerText = 'Submit'
+
+    reset.setAttribute('id', 'reset')
+    reset.setAttribute('class', 'center')
+    reset.setAttribute('hidden', 'true')
+    reset.innerText = 'Reset'
 
     today.setAttribute('id', 'today')
     today.innerText = fullDate()
@@ -215,12 +222,14 @@ const renderJournalBox = () => {
     journalBox.setAttribute('disabled', 'true')
 
     rightDiv().appendChild(form)
-    form.appendChild(btn)
+    form.appendChild(submit)
+    form.appendChild(reset)
     form.appendChild(today)
     form.appendChild(label)
     form.appendChild(journalBox)    
 
     form.addEventListener('submit', submitJournalLog)
+    reset.addEventListener('click', loadJournal)
 }
 
 const renderEntriesHeader = () => {
@@ -285,10 +294,10 @@ const renderMonthsContainer = () => {
         return JournalMonths.indexOf(month) === index;
     });
 
-    uniqueMonths.forEach(month => {
+    let uniqueReverse = uniqueMonths.reverse()
+    uniqueReverse.forEach(month => {
         for(let monthArray of monthCollectionArrayText) {
             if (month !== monthArray) {
-                console.log(month)
                 const a = document.createElement('a')
                 a.setAttribute('href', '#')
                 a.setAttribute('class', 'collection-item')
@@ -321,6 +330,7 @@ const countDown = () => {
             timer().innerHTML = '<h3>Well done! You journaled for 2 minutes!</h3>'
             textBox().setAttribute('disabled', 'true')
             submit().removeAttribute('hidden', 'true')
+            reset().removeAttribute('hidden', 'true')
         }
     }, 1000);
 }
