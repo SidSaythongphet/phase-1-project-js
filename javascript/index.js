@@ -4,6 +4,7 @@ let count = startCount * 60
 const BASE_URL = 'http://localhost:3000'
 let entries = []
 
+
 /** Node Getters**/
 const navList = () => document.querySelectorAll('li')
 const mainBody = () => document.querySelector('body')
@@ -81,6 +82,49 @@ const loadEntries = (event) => {
     activeEntry()
 }
 
+const startCountDown = () => {
+    textBox().removeAttribute('disabled', 'true')
+    start().setAttribute('hidden', 'true')
+    countDown() 
+}
+
+const submitJournalLog = (event) => {
+    event.preventDefault()
+    
+    const newEntry = {
+        "entryDate": fullDate(),
+        "log": textBox().value,
+        "id": ''
+    }
+    console.log(newEntry)
+    
+    fetch(BASE_URL + '/entries', {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+        },
+        body: JSON.stringify(newEntry),
+    })
+    .then(resp => resp.json())
+    .then(data => {
+        entries.unshift(data)
+        loadEntries()
+    })
+}
+
+/** Requests **/
+
+const loadJournalLogs = () => {
+    fetch(BASE_URL + '/entries')
+    .then(resp => resp.json())
+    .then(data => {
+        entries = data
+    })
+}
+
+/** Miscellaneous**/
+
 const activeHome = () => {
     const links = Array.from(navList())
     const home = links[0]
@@ -124,49 +168,6 @@ const expandEntries = () => {
     })
 }
 
-const startCountDown = () => {
-    textBox().removeAttribute('disabled', 'true')
-    start().setAttribute('hidden', 'true')
-    countDown() 
-}
-
-const submitJournalLog = (event) => {
-    event.preventDefault()
-
-    const newEntry = {
-        "entryDate": fullDate(),
-        "log": textBox().value,
-        "id": ''
-    }
-    console.log(newEntry)
-
-    fetch(BASE_URL + '/entries', {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-        },
-        body: JSON.stringify(newEntry),
-    })
-        .then(resp => resp.json())
-        .then(data => {
-            entries.unshift(data)
-            loadEntries()
-        })
-}
-
-/** Requests **/
-
-const loadJournalLogs = () => {
-    fetch(BASE_URL + '/entries')
-        .then(resp => resp.json())
-        .then(data => {
-            entries = data
-        })
-}
-
-/** Miscellaneous**/
-
 const clearDivs = () => {
     mainDiv().innerHTML = ''
     secondDiv().innerHTML = ''
@@ -174,12 +175,15 @@ const clearDivs = () => {
 
 const createLayout = () => {
     const leftColumn = document.createElement('div')
+    const middleColumn = document.createElement('div')
     const rightColumn = document.createElement('div')
 
     leftColumn.setAttribute('class', 'col s2')
-    rightColumn.setAttribute('class', 'col s8')
+    middleColumn.setAttribute('class', 'col s8')
+    rightColumn.setAttribute('class', 'col s2')
 
     secondDiv().appendChild(leftColumn)
+    secondDiv().appendChild(middleColumn)
     secondDiv().appendChild(rightColumn)
 }
 
@@ -233,7 +237,8 @@ const renderPastEntryContainer = () => {
 }
 
 const loadPastEntry = () => {
-    entries.forEach(entry => {
+        let reverseEntries = [...entries].reverse()
+        reverseEntries.forEach(entry => {
         const li = document.createElement('li')
         const header = document.createElement('div')
         const body = document.createElement('div')
@@ -259,23 +264,46 @@ const renderMonthsContainer = () => {
     monthHeader.innerText = 'Entry by Month'
     leftDiv().appendChild(monthHeader)
 
-    const jan = document.createElement('a')
-    const feb = document.createElement('a')
+    const monthCollection = document.querySelectorAll('a.collection-item')
+    const monthCollectionArray = Array.from(monthCollection)
+    const monthCollectionArrayText = ['none']
+    monthCollectionArray.map((ar) => {
+        const innerText = ar.innerText
+        monthCollectionArrayText.push(innerText)
+    })
+    
+    let JournalMonths = []
+    entries.forEach(entry => {
+        let splitDate = entry.entryDate.split(' ')
+        splitDate.splice(2,1)
+        splitDate.shift()
+        let monthYear = splitDate.join(' ')
+        JournalMonths.push(monthYear)
+    })
+    
+    let uniqueMonths = JournalMonths.filter((month, index) => {
+        return JournalMonths.indexOf(month) === index;
+    });
 
-    jan.setAttribute('href', '#')
-    jan.setAttribute('class', 'collection-item')
-    jan.innerText = 'January'
-    feb.setAttribute('href', '#')
-    feb.setAttribute('class', 'collection-item')
-    feb.innerText = 'February'
-
-    leftDiv().appendChild(jan)
-    leftDiv().appendChild(feb)
+    uniqueMonths.forEach(month => {
+        for(let monthArray of monthCollectionArrayText) {
+            if (month !== monthArray) {
+                console.log(month)
+                const a = document.createElement('a')
+                a.setAttribute('href', '#')
+                a.setAttribute('class', 'collection-item')
+                a.innerText = `${month}`
+                leftDiv().appendChild(a)   
+            } else {
+                return false
+            }
+        }
+    })
 }
 
 const fullDate = () => {
     let today = new Date();
-    return today.toDateString()
+    return today.toLocaleDateString('en-us', { weekday:"long", year:"numeric", month:"long", day:"numeric"}) 
 }
 
 const countDown = () => {
@@ -316,6 +344,13 @@ const renderStart = () => {
     btn.innerText = 'Start'
     mainDiv().appendChild(btn)
 }
+
+
+
+
+
+
+
 
 /** Start Up**/
 
