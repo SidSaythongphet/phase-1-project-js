@@ -39,7 +39,6 @@ const startEvent = () => {
     start().addEventListener('click', startCountDown)
 }
 
-
 /** Event Handlers**/
 
 const loadHome = (event) => {
@@ -151,7 +150,8 @@ const submitJournalLog = (event) => {
     })
         .then(resp => resp.json())
         .then(data => {
-            entries.push(data)
+            entries.unshift(data)
+            loadEntries()
         })
 }
 
