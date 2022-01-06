@@ -35,10 +35,11 @@ body {
 } */
 
 #today {
-    margin-top: 10px;
-    background-color: blanchedalmond;
+    margin-top: 35px;
     text-align: right;
     padding-right: 50px;
+    margin-left: 50%;
+    margin-right: 20px;
     font-weight: bold;
     font-size: xx-large;
     border-bottom: teal;
@@ -48,14 +49,20 @@ body {
 }
 
 textarea {
-    background-color: blanchedalmond;
+    background-color: rgba(255, 235, 205, 0);
+    border: none;
+    outline: none;
     color: black;
-    margin-top: 50px;
-    height: 400px;
+    margin-top: -.5%;
+    height: 500px;
     font-size: x-large;
     text-indent: 50px;
     padding: 50px 50px;
-    line-height: 50px;
+    line-height: 290%;
+}
+
+::placeholder {
+    color: black
 }
 
 /** Entries Page**/
@@ -90,9 +97,10 @@ textarea {
     padding-left: 50px;
     padding-top: 25px;
     border: none;
-}
+} */
 
 .col.s8 {
-    padding-top: 100px;
-    padding-right: 100px;
-} */
+    background-image: url('https://i.pinimg.com/originals/84/f8/5a/84f85a08ac3eee7f305af97d0fc700df.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+}
