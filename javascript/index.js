@@ -5,6 +5,7 @@ const BASE_URL = 'http://localhost:3000'
 let entries = []
 
 /** Node Getters**/
+const navList = () => document.querySelectorAll('li')
 const mainBody = () => document.querySelector('body')
 const mainDiv = () => document.getElementById('main')
 const secondDiv = () => document.getElementById('second')
@@ -38,23 +39,25 @@ const startEvent = () => {
     start().addEventListener('click', startCountDown)
 }
 
+
 /** Event Handlers**/
 
 const loadHome = (event) => {
     if(event) {
         event.preventDefault()
     }
+    activeHome()
     clearDivs()
     createLayout()
     const h1 = document.createElement('h1')
     const p = document.createElement('p')
     h1.innerText = 'Two Minutes A Day Journal'
     p.innerText = 'The Two-Minute Rule states “When you start a new habit, it should take less than two minutes to do.”'
-    // h1.className = 'center-align'
     p.className = 'center-align'
 
     mainDiv().appendChild(h1)
     rightDiv().appendChild(p)
+
 }
 
 const loadJournal = (event) => {
@@ -65,17 +68,51 @@ const loadJournal = (event) => {
     renderStart()
     renderJournalBox()
     startEvent()
+    activeJournal()
 }
 
 const loadEntries = (event) => {
     event.preventDefault()
     clearDivs()
-
     createLayout()
     renderEntriesHeader()
     renderPastEntryContainer()
     renderMonthsContainer()
     loadPastEntry()
+    activeEntry()
+}
+
+const activeHome = () => {
+    const links = Array.from(navList())
+    const home = links[0]
+    const journal = links[1]
+    const entry = links[2]
+
+    home.className = 'active'
+    journal.className = 'none'
+    entry.className = 'none'
+}
+
+const activeJournal = () => {
+    const links = Array.from(navList())
+    const home = links[0]
+    const journal = links[1]
+    const entry = links[2]
+
+    journal.className = 'active'
+    home.className = 'none'
+    entry.className = 'none'
+}
+
+const activeEntry = () => {
+    const links = Array.from(navList())
+    const home = links[0]
+    const journal = links[1]
+    const entry = links[2]
+
+    entry.className = 'active'
+    journal.className = 'none'
+    home.className = 'none'
 }
 
 const expandEntries = () => {
@@ -170,7 +207,7 @@ const renderJournalBox = () => {
 
     journalBox.setAttribute('id', 'entry')
     journalBox.setAttribute('name', 'entry')
-    journalBox.setAttribute('placeholder', 'Let\'s write')
+    journalBox.setAttribute('placeholder', 'Press \'Start\' to begin writing...')
     journalBox.setAttribute('disabled', 'true')
 
     rightDiv().appendChild(form)

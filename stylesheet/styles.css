@@ -20,6 +20,10 @@ body {
     width: 850px;
 }
 
+#second {
+    margin-top: 85px;
+}
+
 /** Journal Page**/
 /* #start {
     margin-left: 100px;
@@ -30,7 +34,7 @@ body {
 } */
 
 #today {
-    margin-top: 100px;
+    margin-top: 10px;
     text-align: right;
     padding-right: 50px;
     font-weight: bold;
