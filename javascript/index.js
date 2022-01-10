@@ -9,6 +9,8 @@ let entries = []
 const navList = () => document.querySelectorAll('li')
 const mainBody = () => document.querySelector('body')
 const mainDiv = () => document.getElementById('main')
+const mainLeft = () => document.querySelector('.col.l7')
+const mainRight = () => document.querySelector('.col.l5')
 const secondDiv = () => document.getElementById('second')
 const homeLink = () => document.getElementById('home-link')
 const journalLink = () => document.getElementById('journal-link')
@@ -65,6 +67,8 @@ const loadJournal = (event) => {
     event.preventDefault()
     clearDivs()
     createLayout()
+    journalMain()
+    journalPrompt()
     renderTimer()
     renderStart()
     renderJournalBox()
@@ -341,7 +345,7 @@ const renderTimer = () => {
     timer.setAttribute('id', 'counter')
     timer.setAttribute('class', 'center')
     timer.innerText = startCount + ':00'
-    mainDiv().appendChild(timer)
+    mainRight().appendChild(timer)
 }
 
 const displayCount = () => {
@@ -353,10 +357,65 @@ const renderStart = () => {
     btn.setAttribute('id', 'start')
 
     btn.innerText = 'Start'
-    mainDiv().appendChild(btn)
+    mainRight().appendChild(btn)
 }
 
+const journalMain = () => {
+    const left = document.createElement('section')
+    const right = document.createElement('section')
 
+    mainDiv().setAttribute('class', 'row')
+
+    left.setAttribute('class', 'col l7')
+    right.setAttribute('class', 'col l5')
+
+    mainDiv().appendChild(left)
+    mainDiv().appendChild(right)
+}
+
+const journalPrompt = () => {
+    const form = document.createElement('form')
+    const h4 = document.createElement('h4')
+    const select = document.createElement('select')
+    const option0 = document.createElement('option')
+    const option1 = document.createElement('option')
+    const option2 = document.createElement('option')
+    const option3 = document.createElement('option')
+    const option4 = document.createElement('option')
+    const option5 = document.createElement('option')
+
+    h4.innerText = "Today's topic is..."
+    h4.setAttribute('class', 'left')
+    select.setAttribute('class', 'browser-default')
+
+    option0.setAttribute('value', '0')
+    option0.innerText = 'Whatever is on my mind!'
+    
+    option1.setAttribute('value', '1')
+    option1.innerText = 'What am I most grateful for today?'
+
+    option2.setAttribute('value', '2')
+    option2.innerText = 'What am I looking forward to in the coming days?'
+
+    option3.setAttribute('value', '3')
+    option3.innerText = 'What is one thing that I want to accomplish or have accomplished today?'
+
+    option4.setAttribute('value', '4')
+    option4.innerText = 'What am I doing today to take care of myself?'
+
+    option5.setAttribute('value', '5')
+    option5.innerText = 'Where do I see myself in 6 months?'
+
+    mainLeft().appendChild(form)
+    form.append(h4)
+    form.appendChild(select)
+    select.appendChild(option0)
+    select.appendChild(option1)
+    select.appendChild(option2)
+    select.appendChild(option3)
+    select.appendChild(option4)
+    select.appendChild(option5)
+}
 
 
 
