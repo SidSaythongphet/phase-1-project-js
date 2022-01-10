@@ -106,3 +106,13 @@ textarea {
     background-repeat: no-repeat;
     background-size: cover;
 }
+
+section p {
+    text-align: left;
+    margin: auto;
+    color: black;
+}
+
+label {
+    color: black;
+}
