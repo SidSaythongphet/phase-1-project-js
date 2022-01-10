@@ -243,6 +243,7 @@ const renderPastEntryContainer = () => {
     const entryContainer = document.createElement('ul')
     entryContainer.setAttribute('class', 'collapsible expandable')
     rightDiv().appendChild(entryContainer)
+    rightDiv().setAttribute('style', 'background:none')
 }
 
 const loadPastEntry = () => {
