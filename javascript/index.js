@@ -1,6 +1,6 @@
 /** Global Variables**/
 let startCount = 2
-let count = startCount * 60
+let count = parseInt(startCount) * 60
 const BASE_URL = 'http://localhost:3000'
 let entries = []
 
@@ -17,6 +17,11 @@ const journalLink = () => document.getElementById('journal-link')
 const entriesLink = () => document.getElementById('entries-link')
 const leftDiv = () => document.querySelector('.col.l2')
 const rightDiv = () => document.querySelector('.col.l8')
+const dropdown = () => document.querySelector('.browser-default')
+const radioOne = () => document.querySelector('input#one')
+const radioTwo = () => document.querySelector('input#two')
+const radioFive = () => document.querySelector('input#five')
+const radioTen = () => document.querySelector('input#ten')
 const textBox = () => document.getElementById('entry')
 const form = () => document.getElementsByName('form')
 const submit = () => document.getElementById('submit')
@@ -89,6 +94,7 @@ const loadEntries = (event) => {
 const startCountDown = (event) => {
     event.preventDefault()
     renderTimer()
+    dropdown().setAttribute('disabled', 'true')
     textBox().removeAttribute('disabled', 'true')
     start().setAttribute('hidden', 'true')
     countDown() 
@@ -333,7 +339,8 @@ const countDown = () => {
             timer().innerText = `${minutes}:${seconds}`
             countDown()
         } else {
-            timer().innerHTML = '<h3>Well done! You journaled for 2 minutes!</h3>'
+            mainDiv().innerHTML = ''
+            mainDiv().innerHTML = `<h3>Well done! You journaled for ${startCount} minute(s)!</h3>`
             textBox().setAttribute('disabled', 'true')
             submit().removeAttribute('hidden', 'true')
             reset().removeAttribute('hidden', 'true')
@@ -349,20 +356,33 @@ const timeRadio = () => {
 
     mainRight().appendChild(h5)
 
-    const radioRight = createSection(mainRight())
-    radioRight.setAttribute('class', 'right col l6')
     const radioLeft = createSection(mainRight())
     radioLeft.setAttribute('class', 'left col l6')
+    const radioRight = createSection(mainRight())
+    radioRight.setAttribute('class', 'right col l6')
 
-    createRadio('optradio', 'one', 'one', 1, radioLeft)
-    createRadio('optradio', 'two', 'default', 2, radioLeft)
-    createRadio('optradio', 'five', 'long', 5, radioRight)
-    createRadio('optradio', 'ten', 'longer', 10, radioRight)
+    createRadio('duration', 'one', 1, radioLeft)
+    createRadio('duration', 'two', 2, radioLeft)
+    radioTwo().checked = 'checked'
+    createRadio('duration', 'five', 5, radioRight)
+    createRadio('duration', 'ten', 10, radioRight)
     mainLeft().appendChild(renderStart())
+    radioEvent()
+}
+
+const radioEvent = () => {
+    const radioArray = [radioOne(), radioTwo(), radioFive(), radioTen()]
+    console.log(radioArray)
+    for (let radio of radioArray) {
+        radio.addEventListener('click', () => {
+            startCount = radio.value
+            count = startCount * 60
+        })
+    }
 }
 
 const renderTimer = () => {
-    const timer = document.createElement('h4')
+    const timer = document.createElement('h2')
     timer.setAttribute('id', 'counter')
     timer.setAttribute('class', 'center')
     timer.innerText = startCount + ':00'
@@ -375,12 +395,13 @@ const displayCount = () => {
 }
 
 const renderStart = () => {
-    const btn = document.createElement('button')
-    btn.setAttribute('id', 'start')
-    btn.setAttribute('class', 'right btn')
+    const submit = document.createElement('input')
+    submit.type = 'submit'
+    submit.value = 'start'
+    submit.setAttribute('id', 'start')
+    submit.setAttribute('class', 'right btn')
 
-    btn.innerText = 'Start'
-    return btn
+    return submit
 }
 
 const journalMain = () => {
@@ -389,8 +410,10 @@ const journalMain = () => {
     const right = document.createElement('section')
 
     mainDiv().appendChild(form)
+    form.name = 'prompt'
     form.setAttribute('class', 'row')
-    form.setAttribute('action', '')
+    form.setAttribute('action', '#')
+    form.setAttribute('onSubmit', 'return setCount()')
 
     left.setAttribute('class', 'col l7')
     right.setAttribute('class', 'col l5')
@@ -441,9 +464,6 @@ const journalPrompt = () => {
     select.appendChild(option5)
 }
 
-
-
-
 /** Node Creator **/
 
 const createSection = (childOf) => {
@@ -452,7 +472,7 @@ const createSection = (childOf) => {
     return childOf.appendChild(section)
 }
 
-const createRadio = (name, number, value, numeral, childOf) => {
+const createRadio = (name, number, numeral, childOf) => {
     const radioNode = document.createElement('input')
     const p = document.createElement('p')
     const label = document.createElement('label')
@@ -461,7 +481,7 @@ const createRadio = (name, number, value, numeral, childOf) => {
     radioNode.type = 'radio'
     radioNode.id = number
     radioNode.name = name
-    radioNode.value = value
+    radioNode.value = numeral
     label.htmlFor = number
     span.innerText = `${numeral} minute(s)`
 
