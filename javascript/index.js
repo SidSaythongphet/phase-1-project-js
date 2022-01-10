@@ -13,8 +13,8 @@ const secondDiv = () => document.getElementById('second')
 const homeLink = () => document.getElementById('home-link')
 const journalLink = () => document.getElementById('journal-link')
 const entriesLink = () => document.getElementById('entries-link')
-const leftDiv = () => document.querySelector('.col.s2')
-const rightDiv = () => document.querySelector('.col.s8')
+const leftDiv = () => document.querySelector('.col.l2')
+const rightDiv = () => document.querySelector('.col.l8')
 const textBox = () => document.getElementById('entry')
 const form = () => document.getElementsByName('form')
 const submit = () => document.getElementById('submit')
@@ -179,9 +179,9 @@ const createLayout = () => {
     const middleColumn = document.createElement('div')
     const rightColumn = document.createElement('div')
 
-    leftColumn.setAttribute('class', 'col s2')
-    middleColumn.setAttribute('class', 'col s8')
-    rightColumn.setAttribute('class', 'col s2')
+    leftColumn.setAttribute('class', 'col l2')
+    middleColumn.setAttribute('class', 'col l8')
+    rightColumn.setAttribute('class', 'col l2')
 
     secondDiv().appendChild(leftColumn)
     secondDiv().appendChild(middleColumn)
@@ -222,8 +222,8 @@ const renderJournalBox = () => {
     journalBox.setAttribute('disabled', 'true')
 
     rightDiv().appendChild(form)
-    form.appendChild(submit)
-    form.appendChild(reset)
+    mainDiv().appendChild(submit)
+    mainDiv().appendChild(reset)
     form.appendChild(today)
     form.appendChild(label)
     form.appendChild(journalBox)    
@@ -269,7 +269,7 @@ const loadPastEntry = () => {
 const renderMonthsContainer = () => {
     const monthHeader = document.createElement('h4')
     monthHeader.setAttribute('id', 'month-header')
-    leftDiv().setAttribute('class', 'collection col s2')
+    leftDiv().setAttribute('class', 'collection col l2')
     monthHeader.innerText = 'Entry by Month'
     leftDiv().appendChild(monthHeader)
 

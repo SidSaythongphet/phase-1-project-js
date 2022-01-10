@@ -21,8 +21,10 @@ body {
 }
 
 #second {
+    
     margin-top: 85px;
     margin: 50px;
+    
 }
 
 /** Journal Page**/
@@ -99,7 +101,7 @@ textarea {
     border: none;
 } */
 
-.col.s8 {
+.col.l8 {
     background-image: url('https://i.pinimg.com/originals/84/f8/5a/84f85a08ac3eee7f305af97d0fc700df.jpg');
     background-repeat: no-repeat;
     background-size: cover;
