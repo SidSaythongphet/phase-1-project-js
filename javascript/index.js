@@ -38,6 +38,7 @@ const timer = () => document.getElementById('counter')
 const start = () => document.getElementById('start')
 const pastEntryContainer = () => document.querySelector('.collapsible.expandable')
 const deleteBtns = () => Array.from(document.querySelectorAll('.delete.btn'))
+const monthLink = () => Array.from(document.querySelectorAll('.collection-item'))
 
 /** Event Listners**/
 
@@ -59,7 +60,6 @@ const startEvent = () => {
 
 const radioEvent = () => {
     const radioArray = [radioOne(), radioTwo(), radioFive(), radioTen()]
-    console.log(radioArray)
     for (let radio of radioArray) {
         radio.addEventListener('click', () => {
             startCount = radio.value
@@ -110,7 +110,6 @@ const loadEntries = (event) => {
     renderPastEntryContainer()
     renderMonthsContainer()
     loadPastEntry()
-
 }
 
 const startCountDown = (event) => {
@@ -287,41 +286,7 @@ const renderPastEntryContainer = () => {
 
 const loadPastEntry = () => {
     let reverseEntries = [...entries].reverse()
-    reverseEntries.forEach(entry => {
-        const li = document.createElement('li')
-        const header = document.createElement('div')
-        const date = document.createElement('p')
-        const duration = document.createElement('p')
-        const body = document.createElement('div')
-        const prompt = document.createElement('p')
-        const line = document.createElement('hr')
-        const log = document.createElement('p')
-        const deleteBtn = createButton('Delete', 'delete')
-    
-        header.setAttribute('class', 'collapsible-header')
-        date.setAttribute('style', 'margin-left: 0')
-        date.innerText = entry.entryDate
-        duration.setAttribute('style', 'margin-right: 25px')
-        duration.innerText = entry.duration
-        body.setAttribute('class', 'collapsible-body')
-        prompt.innerHTML = `<strong>${entry.prompt}</strong>`
-        line.setAttribute('style', 'border-top: 2px solid teal')
-        log.innerText = entry.log + '...'
-        deleteBtn.className = 'delete btn'
-        deleteBtn.id = entry.id
-        deleteBtn.style = 'margin-top: 5%'
-        
-
-        pastEntryContainer().appendChild(li)
-        li.appendChild(header)
-        header.appendChild(date)
-        header.appendChild(duration)
-        li.appendChild(body)
-        body.appendChild(prompt)
-        body.appendChild(line)
-        body.appendChild(log)
-        body.appendChild(deleteBtn)
-    })
+    reverseEntries.forEach(entry => createPastEntry(entry))
     expandEntries()
 
     const deleteEntry = (event) => {
@@ -352,12 +317,13 @@ const renderMonthsContainer = () => {
     const monthHeader = document.createElement('h4')
     monthHeader.setAttribute('id', 'month-header')
     leftSection().setAttribute('class', 'collection col l2')
+    leftSection().setAttribute('style', 'border: none')
     monthHeader.innerText = 'Entry by Month'
     leftSection().appendChild(monthHeader)
 
     const monthCollection = document.querySelectorAll('a.collection-item')
     const monthCollectionArray = Array.from(monthCollection)
-    const monthCollectionArrayText = ['none']
+    const monthCollectionArrayText = [""]
     monthCollectionArray.map((ar) => {
         const innerText = ar.innerText
         monthCollectionArrayText.push(innerText)
@@ -371,7 +337,8 @@ const renderMonthsContainer = () => {
         let monthYear = splitDate.join(' ')
         JournalMonths.push(monthYear)
     })
-    
+    console.log(JournalMonths)
+    console.log(entries.id)
     let uniqueMonths = JournalMonths.filter((month, index) => {
         return JournalMonths.indexOf(month) === index;
     });
@@ -390,6 +357,21 @@ const renderMonthsContainer = () => {
             }
         }
     })
+    
+    const loadMonth = (event) => {
+        pastEntryContainer().innerHTML = ' '
+        let filteredEntries = []
+        let [month, year] = event.target.innerText.split(' ')
+        filteredEntries = entries.filter(entry => entry.entryDate.includes(month) && entry.entryDate.includes(year))
+        filteredEntries.map(entry => createPastEntry(entry))
+    }
+
+    const monthLinkEvent = () => {
+        for (let link of monthLink()) {
+            link.addEventListener('click', loadMonth)
+        }
+    }
+    monthLinkEvent()
 }
 
 const fullDate = () => {
@@ -567,6 +549,12 @@ class Option {
     }
 }
 
+const createParagraph = (text) => {
+    const p = document.createElement('p')
+    p.innerText = text
+    return p
+}
+
 /** Start Up**/
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -577,3 +565,38 @@ document.addEventListener('DOMContentLoaded', () => {
     entriesPageEvent()
 })
 
+const createPastEntry = (entry) => {
+    const li = document.createElement('li')
+    const header = document.createElement('div')
+    const date = document.createElement('p')
+    const duration = document.createElement('p')
+    const body = document.createElement('div')
+    const prompt = document.createElement('p')
+    const line = document.createElement('hr')
+    const log = document.createElement('p')
+    const deleteBtn = createButton('Delete', 'delete')
+
+    header.setAttribute('class', 'collapsible-header')
+    date.setAttribute('style', 'margin-left: 0')
+    date.innerText = entry.entryDate
+    duration.setAttribute('style', 'margin-right: 25px')
+    duration.innerText = entry.duration
+    body.setAttribute('class', 'collapsible-body')
+    prompt.innerHTML = `<strong>${entry.prompt}</strong>`
+    line.setAttribute('style', 'border-top: 2px solid teal')
+    log.innerText = entry.log + '...'
+    deleteBtn.className = 'delete btn'
+    deleteBtn.id = entry.id
+    deleteBtn.style = 'margin-top: 5%'
+    
+
+    pastEntryContainer().appendChild(li)
+    li.appendChild(header)
+    header.appendChild(date)
+    header.appendChild(duration)
+    li.appendChild(body)
+    body.appendChild(prompt)
+    body.appendChild(line)
+    body.appendChild(log)
+    body.appendChild(deleteBtn)
+}

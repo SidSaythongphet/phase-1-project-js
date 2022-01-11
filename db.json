@@ -1,18 +1,32 @@
 {
   "entries": [
     {
-      "entryDate": "Monday",
+      "entryDate": "Tuesday, November 11, 2021",
       "log": "Tester to show new month.",
       "duration": "1 minute(s)",
       "prompt": "",
       "id": 1
     },
     {
-      "entryDate": "Tuesday",
+      "entryDate": "Tuesday, December 11, 2021",
       "log": "Tester to show new month.",
       "duration": "1 minute(s)",
       "prompt": "",
       "id": 2
+    },
+    {
+      "entryDate": "Tuesday, January 11, 2022",
+      "log": "Today I start making a habit of writing everyday for at least two minutes. I may not know what to write all the time, but with a set time, I can just write whatever I want. It is the act of setting this time to write that is important in the beginning. not necessarily the content. So I intent to keep up with this journal everyda",
+      "duration": "2 minute(s)",
+      "prompt": "Whatever is on my mind!",
+      "id": 3
+    },
+    {
+      "entryDate": "Tuesday, February 11, 2022",
+      "log": "Today I start making a habit of writing everyday for at least two minutes. I may not know what to write all the time, but with a set time, I can just write whatever I want. It is the act of setting this time to write that is important in the beginning. not necessarily the content. So I intent to keep up with this journal everyda",
+      "duration": "2 minute(s)",
+      "prompt": "Whatever is on my mind!",
+      "id": 3
     }
   ]
 }
