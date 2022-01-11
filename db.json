@@ -1,32 +1,18 @@
 {
   "entries": [
     {
-      "entryDate": "Tuesday, December 28, 2021",
+      "entryDate": "Monday",
       "log": "Tester to show new month.",
-      "duration": "",
+      "duration": "1 minute(s)",
       "prompt": "",
       "id": 1
     },
     {
-      "entryDate": "Monday, January 10, 2022",
-      "log": "To finish this project.",
+      "entryDate": "Tuesday",
+      "log": "Tester to show new month.",
       "duration": "1 minute(s)",
-      "prompt": "targetPrompt",
+      "prompt": "",
       "id": 2
-    },
-    {
-      "entryDate": "Tuesday, January 11, 2022",
-      "log": "Today, I am testing the post method",
-      "duration": "1 minute(s)",
-      "prompt": "What am I most grateful for today?",
-      "id": 3
-    },
-    {
-      "entryDate": "Tuesday, January 11, 2022",
-      "log": "hello, boby\n",
-      "duration": "2 minute(s)",
-      "prompt": "Whatever is on my mind!",
-      "id": 4
     }
   ]
 }

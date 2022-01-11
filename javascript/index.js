@@ -37,6 +37,7 @@ const reset = () => document.getElementById('reset')
 const timer = () => document.getElementById('counter')
 const start = () => document.getElementById('start')
 const pastEntryContainer = () => document.querySelector('.collapsible.expandable')
+const deleteBtns = () => Array.from(document.querySelectorAll('.delete.btn'))
 
 /** Event Listners**/
 
@@ -109,6 +110,7 @@ const loadEntries = (event) => {
     renderPastEntryContainer()
     renderMonthsContainer()
     loadPastEntry()
+
 }
 
 const startCountDown = (event) => {
@@ -284,8 +286,8 @@ const renderPastEntryContainer = () => {
 }
 
 const loadPastEntry = () => {
-        let reverseEntries = [...entries].reverse()
-        reverseEntries.forEach(entry => {
+    let reverseEntries = [...entries].reverse()
+    reverseEntries.forEach(entry => {
         const li = document.createElement('li')
         const header = document.createElement('div')
         const date = document.createElement('p')
@@ -305,7 +307,10 @@ const loadPastEntry = () => {
         prompt.innerHTML = `<strong>${entry.prompt}</strong>`
         line.setAttribute('style', 'border-top: 2px solid teal')
         log.innerText = entry.log + '...'
-        deleteBtn.className = 'btn'
+        deleteBtn.className = 'delete btn'
+        deleteBtn.id = entry.id
+        deleteBtn.style = 'margin-top: 5%'
+        
 
         pastEntryContainer().appendChild(li)
         li.appendChild(header)
@@ -318,6 +323,29 @@ const loadPastEntry = () => {
         body.appendChild(deleteBtn)
     })
     expandEntries()
+
+    const deleteEntry = (event) => {
+        fetch(BASE_URL + '/entries/' + `${event.target.id}`, {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json",
+                Accept: "application/json",
+            }
+        })
+        .then(resp => resp.json())
+        .then(data => {
+            entries = entries.filter(e => e.id !== parseInt(event.target.id))
+            loadEntries()
+        })
+    }
+
+    const deleteEvent = () => {
+        for ( let btn of deleteBtns()) {
+            btn.addEventListener('click', deleteEntry)
+        }
+    }
+
+    deleteEvent()
 }
 
 const renderMonthsContainer = () => {
