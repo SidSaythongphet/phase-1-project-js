@@ -101,12 +101,13 @@ textarea {
     border: none;
 } */
 
-.col.l8 {
+.col.s12.m4.l8 {
     background-image: url('https://i.pinimg.com/originals/84/f8/5a/84f85a08ac3eee7f305af97d0fc700df.jpg');
     background-repeat: no-repeat;
     background-size: cover;
 }
 
+/* Duration styling */
 section p {
     text-align: left;
     margin: auto;
@@ -116,3 +117,9 @@ section p {
 label {
     color: black;
 }
+
+/* .left {
+    margin-left: 0;
+}
+
+.right {} */

@@ -3,17 +3,30 @@
     {
       "entryDate": "Tuesday, December 28, 2021",
       "log": "Tester to show new month.",
+      "duration": "",
+      "prompt": "",
       "id": 1
     },
     {
-      "entryDate": "Tuesday, January 4, 2022",
-      "log": "Today I start my habit of writing for atleast 2 minutes per day.",
+      "entryDate": "Monday, January 10, 2022",
+      "log": "To finish this project.",
+      "duration": "1 minute(s)",
+      "prompt": "targetPrompt",
       "id": 2
     },
     {
-      "entryDate": "Wednesday, January 5, 2022",
-      "log": "Today is day three of working on this web page. I have successfully applied a post method so once this text is submitted, it will be published onto the entries page. This has stumped me for a while, but I able to figure it out eventually",
+      "entryDate": "Tuesday, January 11, 2022",
+      "log": "Today, I am testing the post method",
+      "duration": "1 minute(s)",
+      "prompt": "What am I most grateful for today?",
       "id": 3
+    },
+    {
+      "entryDate": "Tuesday, January 11, 2022",
+      "log": "hello, boby\n",
+      "duration": "2 minute(s)",
+      "prompt": "Whatever is on my mind!",
+      "id": 4
     }
   ]
 }

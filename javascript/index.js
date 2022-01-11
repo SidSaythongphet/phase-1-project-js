@@ -19,12 +19,19 @@ const leftSection = () => document.getElementById('secondLeft')
 const middleSection = () => document.getElementById('secondMiddle')
 const rightSection = () => document.getElementById('secondRight')
 const dropdown = () => document.querySelector('.browser-default')
+const promptOne = () => document.getElementById('optOne')
+const promptTwo = () => document.getElementById('optTwo')
+const promptThree = () => document.getElementById('optThree')
+const promptFour = () => document.getElementById('optFour')
+const promptFive = () => document.getElementById('optFive')
+const promptSix = () => document.getElementById('optSix')
+const entryLabel = () => document.getElementById('entry-label')
 const radioOne = () => document.querySelector('input#one')
 const radioTwo = () => document.querySelector('input#two')
 const radioFive = () => document.querySelector('input#five')
 const radioTen = () => document.querySelector('input#ten')
 const textBox = () => document.getElementById('entry')
-const form = () => document.getElementsByName('form')
+const entryForm = () => document.getElementById('entry-form')
 const submit = () => document.getElementById('submit')
 const reset = () => document.getElementById('reset')
 const timer = () => document.getElementById('counter')
@@ -49,6 +56,17 @@ const startEvent = () => {
     start().addEventListener('click', startCountDown)
 }
 
+const radioEvent = () => {
+    const radioArray = [radioOne(), radioTwo(), radioFive(), radioTen()]
+    console.log(radioArray)
+    for (let radio of radioArray) {
+        radio.addEventListener('click', () => {
+            startCount = radio.value
+            count = startCount * 60
+        })
+    }
+}
+
 /** Event Handlers**/
 
 const loadHome = (event) => {
@@ -57,7 +75,7 @@ const loadHome = (event) => {
     }
     activeHome()
     clearDivs()
-    createLayout()
+    createLayout(secondDiv())
     const h1 = document.createElement('h1')
     const p = document.createElement('p')
     h1.innerText = 'Two Minutes A Day Journal'
@@ -71,42 +89,45 @@ const loadHome = (event) => {
 
 const loadJournal = (event) => {
     event.preventDefault()
+    activeJournal()
     clearDivs()
-    createLayout()
     journalMain()
     journalPrompt()
-    timeRadio()
+    durationRadio()
     renderJournalBox()
     startEvent()
-    activeJournal()
 }
 
 const loadEntries = (event) => {
-    event.preventDefault()
+    if (event) {
+        event.preventDefault()
+    }
+    activeEntry()
     clearDivs()
-    createLayout()
+    createLayout(secondDiv())
     renderEntriesHeader()
     renderPastEntryContainer()
     renderMonthsContainer()
     loadPastEntry()
-    activeEntry()
 }
 
 const startCountDown = (event) => {
     event.preventDefault()
     renderTimer()
-    dropdown().setAttribute('disabled', 'true')
+    disableDropdown()
     textBox().removeAttribute('disabled', 'true')
-    start().setAttribute('hidden', 'true')
+    start().remove()
     countDown() 
 }
 
 const submitJournalLog = (event) => {
     event.preventDefault()
-    
+
     const newEntry = {
         "entryDate": fullDate(),
         "log": textBox().value,
+        "duration": `${startCount} minute(s)`,
+        "prompt": entryForm().value,
         "id": ''
     }
     console.log(newEntry)
@@ -121,7 +142,7 @@ const submitJournalLog = (event) => {
     })
     .then(resp => resp.json())
     .then(data => {
-        entries.unshift(data)
+        entries.push(data)
         loadEntries()
     })
 }
@@ -186,64 +207,67 @@ const clearDivs = () => {
     secondDiv().innerHTML = ''
 }
 
-const createLayout = () => {
+const createLayout = (parent) => {
     const leftColumn = document.createElement('section')
     const middleColumn = document.createElement('section')
     const rightColumn = document.createElement('section')
 
-    leftColumn.setAttribute('class', 'col l2')
+    leftColumn.setAttribute('class', 'col s12 m4 l2')
     leftColumn.id = 'secondLeft'
-    middleColumn.setAttribute('class', 'col l8')
+    middleColumn.setAttribute('class', 'col s12 m4 l8')
     middleColumn.id = 'secondMiddle'
-    rightColumn.setAttribute('class', 'col l2')
+    rightColumn.setAttribute('class', 'col s12 m4 l2')
     rightColumn.id = 'secondRight'
 
-    secondDiv().appendChild(leftColumn)
-    secondDiv().appendChild(middleColumn)
-    secondDiv().appendChild(rightColumn)
+    parent.appendChild(leftColumn)
+    parent.appendChild(middleColumn)
+    parent.appendChild(rightColumn)
 }
 
 const renderJournalBox = () => {
     const form = document.createElement('form')
-
     const today = document.createElement('h5')
     const label = document.createElement('label')
     const journalBox = document.createElement('textarea')
 
     form.setAttribute('name', 'entry')
+    form.id = 'entry-form'
     form.setAttribute('method', 'post')
-
 
     const submit = createButton('Submit', 'submit')
     submit.type = 'submit'
-    leftSection().appendChild(submit)
-
+    submit.name = 'entry'
+    submit.hidden = 'true'
+    
     const reset = createButton('Reset', 'reset')
-    rightSection().appendChild(reset)
-
+    reset.hidden = 'true'
+    
     today.setAttribute('id', 'today')
     today.innerText = fullDate()
-
+    
     label.setAttribute('for', 'entry')
+    label.setAttribute('style', 'padding-left: 5%')
+    label.id = 'entry-label'
     label.innerText = 'What is on your mind?'
-
+    
     journalBox.setAttribute('id', 'entry')
     journalBox.setAttribute('name', 'entry')
     journalBox.setAttribute('placeholder', 'Press \'Start\' to begin writing...')
     journalBox.setAttribute('disabled', 'true')
-
-    middleSection().appendChild(form)
+    
+    secondDiv().appendChild(form)
+    createLayout(form)
     leftSection().appendChild(submit)
     rightSection().appendChild(reset)
-    form.appendChild(today)
-    form.appendChild(label)
-    form.appendChild(journalBox)    
-
+    middleSection().appendChild(today)
+    middleSection().appendChild(label)
+    middleSection().appendChild(journalBox)    
+    leftSection().appendChild(submit)
+    rightSection().appendChild(reset)
+    
     form.addEventListener('submit', submitJournalLog)
     reset.addEventListener('click', loadJournal)
 }
-
-
 
 const renderEntriesHeader = () => {
     const entryHeader = document.createElement('h2')   
@@ -264,18 +288,34 @@ const loadPastEntry = () => {
         reverseEntries.forEach(entry => {
         const li = document.createElement('li')
         const header = document.createElement('div')
+        const date = document.createElement('p')
+        const duration = document.createElement('p')
         const body = document.createElement('div')
-        const span = document.createElement('span')
+        const prompt = document.createElement('p')
+        const line = document.createElement('hr')
+        const log = document.createElement('p')
+        const deleteBtn = createButton('Delete', 'delete')
     
         header.setAttribute('class', 'collapsible-header')
-        header.innerText = entry.entryDate
+        date.setAttribute('style', 'margin-left: 0')
+        date.innerText = entry.entryDate
+        duration.setAttribute('style', 'margin-right: 25px')
+        duration.innerText = entry.duration
         body.setAttribute('class', 'collapsible-body')
-        span.innerText = entry.log + '...'
+        prompt.innerHTML = `<strong>${entry.prompt}</strong>`
+        line.setAttribute('style', 'border-top: 2px solid teal')
+        log.innerText = entry.log + '...'
+        deleteBtn.className = 'btn'
 
         pastEntryContainer().appendChild(li)
         li.appendChild(header)
+        header.appendChild(date)
+        header.appendChild(duration)
         li.appendChild(body)
-        body.appendChild(span)
+        body.appendChild(prompt)
+        body.appendChild(line)
+        body.appendChild(log)
+        body.appendChild(deleteBtn)
     })
     expandEntries()
 }
@@ -342,15 +382,17 @@ const countDown = () => {
             countDown()
         } else {
             mainDiv().innerHTML = ''
-            mainDiv().innerHTML = `<h3>Well done! You journaled for ${startCount} minute(s)!</h3>`
+            mainDiv().innerHTML = `<h3>Well done! You journaled for ${startCount} minute(s)!`
             textBox().setAttribute('disabled', 'true')
             submit().removeAttribute('hidden', 'true')
+            submit().className = 'right btn'
             reset().removeAttribute('hidden', 'true')
+            reset().className = 'left btn'
         }
     }, 1000);
 }
 
-const timeRadio = () => {
+const durationRadio = () => {
     const h5 = document.createElement('h5')
 
     h5.setAttribute('class', 'left')
@@ -365,22 +407,11 @@ const timeRadio = () => {
 
     createRadio('duration', 'one', 1, radioLeft)
     createRadio('duration', 'two', 2, radioLeft)
-    radioTwo().checked = 'checked'
     createRadio('duration', 'five', 5, radioRight)
     createRadio('duration', 'ten', 10, radioRight)
+    radioTwo().checked = 'checked'
     mainLeft().appendChild(renderStart())
     radioEvent()
-}
-
-const radioEvent = () => {
-    const radioArray = [radioOne(), radioTwo(), radioFive(), radioTen()]
-    console.log(radioArray)
-    for (let radio of radioArray) {
-        radio.addEventListener('click', () => {
-            startCount = radio.value
-            count = startCount * 60
-        })
-    }
 }
 
 const renderTimer = () => {
@@ -397,10 +428,8 @@ const displayCount = () => {
 }
 
 const renderStart = () => {
-    const start = document.createElement('input')
+    const start = createButton('Start', 'start')
     start.type = 'submit'
-    start.value = 'start'
-    start.setAttribute('id', 'start')
     start.setAttribute('class', 'right btn')
 
     return start
@@ -428,27 +457,37 @@ const journalPrompt = () => {
     const select = document.createElement('select')
 
     h5.innerText = "Today's topic is..."
-    h5.setAttribute('class', 'left')
     select.setAttribute('class', 'browser-default')
 
-    const option0 = new Option('0', 'Whatever is on my mind!')
-    const option1 = new Option('1', 'What am I most grateful for today?')
-    const option2 = new Option('2', 'What am I looking forward to in the coming days?')
-    const option3 = new Option('3', 'What is one thing that I want to accomplish or have accomplished today?')
-    const option4 = new Option('4', 'What am I doing today to take care of myself?')
-    const option5 = new Option('5', 'Where do I see myself in 6 months?')
+    const option1 = new Option('optOne', 'Whatever is on my mind!')
+    const option2 = new Option('optTwo','What am I most grateful for today?')
+    const option3 = new Option('optThree','What am I looking forward to in the coming days?')
+    const option4 = new Option('optFour','What is one thing that I want to accomplish or have accomplished today?')
+    const option5 = new Option('optFive','What am I doing today to take care of myself?')
+    const option6 = new Option('optSix','Where do I see myself in 6 months?')
 
     mainLeft().appendChild(h5)
     mainLeft().appendChild(select)
-    select.appendChild(option0.option())
     select.appendChild(option1.option())
     select.appendChild(option2.option())
     select.appendChild(option3.option())
     select.appendChild(option4.option())
     select.appendChild(option5.option())
-
+    select.appendChild(option6.option())
+    promptOne().selected = "selected"
 }
 
+const disableDropdown = () => {
+    let selected = dropdown().value
+    const selectedDisplay = document.createElement('p')
+    selectedDisplay.id = 'selected-prompt'
+    selectedDisplay.className = 'center'
+    selectedDisplay.innerText = `${selected}`
+
+    mainLeft().appendChild(selectedDisplay)
+    dropdown().remove()
+    entryForm().value = selected
+}
 /** Node Creator **/
 
 const createSection = (childOf) => {
@@ -485,14 +524,16 @@ const createButton = (name, id) => {
 }
 
 class Option {
-    constructor (value, text) {
-        this.value = value,
+    constructor (id, text) {
+        this.value = text,
+        this.id = id
         this.text = text
     }
 
     option () {
         const option = document.createElement('option')
         option.value = this.value
+        option.id = this.id
         option.innerText = this.text
         return option
     }
