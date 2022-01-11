@@ -6,7 +6,7 @@ let entries = []
 
 
 /** Node Getters**/
-const navList = () => document.querySelectorAll('li')
+const navList = () => Array.from(document.querySelectorAll('ul#nav li'))
 const mainBody = () => document.querySelector('body')
 const mainDiv = () => document.getElementById('main')
 const mainLeft = () => document.querySelector('.col.l7')
@@ -74,7 +74,6 @@ const loadHome = (event) => {
     if(event) {
         event.preventDefault()
     }
-    activeHome()
     clearDivs()
     createLayout(secondDiv())
     const h1 = document.createElement('h1')
@@ -90,7 +89,6 @@ const loadHome = (event) => {
 
 const loadJournal = (event) => {
     event.preventDefault()
-    activeJournal()
     clearDivs()
     journalMain()
     journalPrompt()
@@ -103,7 +101,6 @@ const loadEntries = (event) => {
     if (event) {
         event.preventDefault()
     }
-    activeEntry()
     clearDivs()
     createLayout(secondDiv())
     renderEntriesHeader()
@@ -160,37 +157,26 @@ const loadJournalLogs = () => {
 
 /** Miscellaneous**/
 
-const activeHome = () => {
-    const links = Array.from(navList())
-    const home = links[0]
-    const journal = links[1]
-    const entry = links[2]
-
-    home.className = 'active'
-    journal.className = 'none'
-    entry.className = 'none'
-}
-
-const activeJournal = () => {
-    const links = Array.from(navList())
-    const home = links[0]
-    const journal = links[1]
-    const entry = links[2]
-
-    journal.className = 'active'
-    home.className = 'none'
-    entry.className = 'none'
-}
-
-const activeEntry = () => {
-    const links = Array.from(navList())
-    const home = links[0]
-    const journal = links[1]
-    const entry = links[2]
-
-    entry.className = 'active'
-    journal.className = 'none'
-    home.className = 'none'
+const activateLinkTag = () => {
+    const [home, journal, entries] = navList()
+    for (let link of navList()) {
+        link.addEventListener('click', (event) => {
+            navList().forEach(link => link.className = '')
+            event.currentTarget.className = 'active'
+            if (event.currentTarget === home) {
+                journal.className = ''
+                entries.className = ''
+            } else if (event.currentTarget === journal) {
+                home.className = ''
+                entries.className = ''
+            } else if (event.currentTarget === entries) {
+                 home.className = ''
+                journal.className = ''
+            } else {
+                 return false
+            }
+        })
+    }
 }
 
 const expandEntries = () => {
@@ -498,6 +484,42 @@ const disableDropdown = () => {
     dropdown().remove()
     entryForm().value = selected
 }
+
+const createPastEntry = (entry) => {
+    const li = document.createElement('li')
+    const header = document.createElement('div')
+    const date = document.createElement('p')
+    const duration = document.createElement('p')
+    const body = document.createElement('div')
+    const prompt = document.createElement('p')
+    const line = document.createElement('hr')
+    const log = document.createElement('p')
+    const deleteBtn = createButton('Delete', 'delete')
+
+    header.setAttribute('class', 'collapsible-header')
+    date.setAttribute('style', 'margin-left: 0')
+    date.innerText = entry.entryDate
+    duration.setAttribute('style', 'margin-right: 25px')
+    duration.innerText = entry.duration
+    body.setAttribute('class', 'collapsible-body')
+    prompt.innerHTML = `<strong>${entry.prompt}</strong>`
+    line.setAttribute('style', 'border-top: 2px solid teal')
+    log.innerText = entry.log + '...'
+    deleteBtn.className = 'delete btn'
+    deleteBtn.id = entry.id
+    deleteBtn.style = 'margin-top: 5%'
+    
+
+    pastEntryContainer().appendChild(li)
+    li.appendChild(header)
+    header.appendChild(date)
+    header.appendChild(duration)
+    li.appendChild(body)
+    body.appendChild(prompt)
+    body.appendChild(line)
+    body.appendChild(log)
+    body.appendChild(deleteBtn)
+}
 /** Node Creator **/
 
 const createSection = (childOf) => {
@@ -563,40 +585,6 @@ document.addEventListener('DOMContentLoaded', () => {
     homePageEvent()
     jouralPageEvent()
     entriesPageEvent()
+    activateLinkTag()
 })
 
-const createPastEntry = (entry) => {
-    const li = document.createElement('li')
-    const header = document.createElement('div')
-    const date = document.createElement('p')
-    const duration = document.createElement('p')
-    const body = document.createElement('div')
-    const prompt = document.createElement('p')
-    const line = document.createElement('hr')
-    const log = document.createElement('p')
-    const deleteBtn = createButton('Delete', 'delete')
-
-    header.setAttribute('class', 'collapsible-header')
-    date.setAttribute('style', 'margin-left: 0')
-    date.innerText = entry.entryDate
-    duration.setAttribute('style', 'margin-right: 25px')
-    duration.innerText = entry.duration
-    body.setAttribute('class', 'collapsible-body')
-    prompt.innerHTML = `<strong>${entry.prompt}</strong>`
-    line.setAttribute('style', 'border-top: 2px solid teal')
-    log.innerText = entry.log + '...'
-    deleteBtn.className = 'delete btn'
-    deleteBtn.id = entry.id
-    deleteBtn.style = 'margin-top: 5%'
-    
-
-    pastEntryContainer().appendChild(li)
-    li.appendChild(header)
-    header.appendChild(date)
-    header.appendChild(duration)
-    li.appendChild(body)
-    body.appendChild(prompt)
-    body.appendChild(line)
-    body.appendChild(log)
-    body.appendChild(deleteBtn)
-}
