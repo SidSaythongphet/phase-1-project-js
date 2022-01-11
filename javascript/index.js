@@ -15,8 +15,9 @@ const secondDiv = () => document.getElementById('second')
 const homeLink = () => document.getElementById('home-link')
 const journalLink = () => document.getElementById('journal-link')
 const entriesLink = () => document.getElementById('entries-link')
-const leftDiv = () => document.querySelector('.col.l2')
-const rightDiv = () => document.querySelector('.col.l8')
+const leftSection = () => document.getElementById('secondLeft')
+const middleSection = () => document.getElementById('secondMiddle')
+const rightSection = () => document.getElementById('secondRight')
 const dropdown = () => document.querySelector('.browser-default')
 const radioOne = () => document.querySelector('input#one')
 const radioTwo = () => document.querySelector('input#two')
@@ -64,7 +65,7 @@ const loadHome = (event) => {
     p.className = 'center-align'
 
     mainDiv().appendChild(h1)
-    rightDiv().appendChild(p)
+    middleSection().appendChild(p)
 
 }
 
@@ -186,13 +187,16 @@ const clearDivs = () => {
 }
 
 const createLayout = () => {
-    const leftColumn = document.createElement('div')
-    const middleColumn = document.createElement('div')
-    const rightColumn = document.createElement('div')
+    const leftColumn = document.createElement('section')
+    const middleColumn = document.createElement('section')
+    const rightColumn = document.createElement('section')
 
     leftColumn.setAttribute('class', 'col l2')
+    leftColumn.id = 'secondLeft'
     middleColumn.setAttribute('class', 'col l8')
+    middleColumn.id = 'secondMiddle'
     rightColumn.setAttribute('class', 'col l2')
+    rightColumn.id = 'secondRight'
 
     secondDiv().appendChild(leftColumn)
     secondDiv().appendChild(middleColumn)
@@ -201,8 +205,7 @@ const createLayout = () => {
 
 const renderJournalBox = () => {
     const form = document.createElement('form')
-    const submit = document.createElement('button')
-    const reset = document.createElement('button')
+
     const today = document.createElement('h5')
     const label = document.createElement('label')
     const journalBox = document.createElement('textarea')
@@ -210,16 +213,13 @@ const renderJournalBox = () => {
     form.setAttribute('name', 'entry')
     form.setAttribute('method', 'post')
 
-    submit.setAttribute('type', 'submit')
-    submit.setAttribute('id', 'submit')
-    submit.setAttribute('class', 'center')
-    submit.setAttribute('hidden', 'true')
-    submit.innerText = 'Submit'
 
-    reset.setAttribute('id', 'reset')
-    reset.setAttribute('class', 'center')
-    reset.setAttribute('hidden', 'true')
-    reset.innerText = 'Reset'
+    const submit = createButton('Submit', 'submit')
+    submit.type = 'submit'
+    leftSection().appendChild(submit)
+
+    const reset = createButton('Reset', 'reset')
+    rightSection().appendChild(reset)
 
     today.setAttribute('id', 'today')
     today.innerText = fullDate()
@@ -232,9 +232,9 @@ const renderJournalBox = () => {
     journalBox.setAttribute('placeholder', 'Press \'Start\' to begin writing...')
     journalBox.setAttribute('disabled', 'true')
 
-    rightDiv().appendChild(form)
-    mainDiv().appendChild(submit)
-    mainDiv().appendChild(reset)
+    middleSection().appendChild(form)
+    leftSection().appendChild(submit)
+    rightSection().appendChild(reset)
     form.appendChild(today)
     form.appendChild(label)
     form.appendChild(journalBox)    
@@ -242,6 +242,8 @@ const renderJournalBox = () => {
     form.addEventListener('submit', submitJournalLog)
     reset.addEventListener('click', loadJournal)
 }
+
+
 
 const renderEntriesHeader = () => {
     const entryHeader = document.createElement('h2')   
@@ -253,8 +255,8 @@ const renderEntriesHeader = () => {
 const renderPastEntryContainer = () => {
     const entryContainer = document.createElement('ul')
     entryContainer.setAttribute('class', 'collapsible expandable')
-    rightDiv().appendChild(entryContainer)
-    rightDiv().setAttribute('style', 'background:none')
+    middleSection().appendChild(entryContainer)
+    middleSection().setAttribute('style', 'background:none')
 }
 
 const loadPastEntry = () => {
@@ -281,9 +283,9 @@ const loadPastEntry = () => {
 const renderMonthsContainer = () => {
     const monthHeader = document.createElement('h4')
     monthHeader.setAttribute('id', 'month-header')
-    leftDiv().setAttribute('class', 'collection col l2')
+    leftSection().setAttribute('class', 'collection col l2')
     monthHeader.innerText = 'Entry by Month'
-    leftDiv().appendChild(monthHeader)
+    leftSection().appendChild(monthHeader)
 
     const monthCollection = document.querySelectorAll('a.collection-item')
     const monthCollectionArray = Array.from(monthCollection)
@@ -314,7 +316,7 @@ const renderMonthsContainer = () => {
                 a.setAttribute('href', '#')
                 a.setAttribute('class', 'collection-item')
                 a.innerText = `${month}`
-                leftDiv().appendChild(a)   
+                leftSection().appendChild(a)   
             } else {
                 return false
             }
@@ -395,13 +397,13 @@ const displayCount = () => {
 }
 
 const renderStart = () => {
-    const submit = document.createElement('input')
-    submit.type = 'submit'
-    submit.value = 'start'
-    submit.setAttribute('id', 'start')
-    submit.setAttribute('class', 'right btn')
+    const start = document.createElement('input')
+    start.type = 'submit'
+    start.value = 'start'
+    start.setAttribute('id', 'start')
+    start.setAttribute('class', 'right btn')
 
-    return submit
+    return start
 }
 
 const journalMain = () => {
@@ -413,7 +415,6 @@ const journalMain = () => {
     form.name = 'prompt'
     form.setAttribute('class', 'row')
     form.setAttribute('action', '#')
-    form.setAttribute('onSubmit', 'return setCount()')
 
     left.setAttribute('class', 'col l7')
     right.setAttribute('class', 'col l5')
@@ -425,43 +426,27 @@ const journalMain = () => {
 const journalPrompt = () => {
     const h5 = document.createElement('h5')
     const select = document.createElement('select')
-    const option0 = document.createElement('option')
-    const option1 = document.createElement('option')
-    const option2 = document.createElement('option')
-    const option3 = document.createElement('option')
-    const option4 = document.createElement('option')
-    const option5 = document.createElement('option')
 
     h5.innerText = "Today's topic is..."
     h5.setAttribute('class', 'left')
     select.setAttribute('class', 'browser-default')
 
-    option0.setAttribute('value', '0')
-    option0.innerText = 'Whatever is on my mind!'
-    
-    option1.setAttribute('value', '1')
-    option1.innerText = 'What am I most grateful for today?'
-
-    option2.setAttribute('value', '2')
-    option2.innerText = 'What am I looking forward to in the coming days?'
-
-    option3.setAttribute('value', '3')
-    option3.innerText = 'What is one thing that I want to accomplish or have accomplished today?'
-
-    option4.setAttribute('value', '4')
-    option4.innerText = 'What am I doing today to take care of myself?'
-
-    option5.setAttribute('value', '5')
-    option5.innerText = 'Where do I see myself in 6 months?'
+    const option0 = new Option('0', 'Whatever is on my mind!')
+    const option1 = new Option('1', 'What am I most grateful for today?')
+    const option2 = new Option('2', 'What am I looking forward to in the coming days?')
+    const option3 = new Option('3', 'What is one thing that I want to accomplish or have accomplished today?')
+    const option4 = new Option('4', 'What am I doing today to take care of myself?')
+    const option5 = new Option('5', 'Where do I see myself in 6 months?')
 
     mainLeft().appendChild(h5)
     mainLeft().appendChild(select)
-    select.appendChild(option0)
-    select.appendChild(option1)
-    select.appendChild(option2)
-    select.appendChild(option3)
-    select.appendChild(option4)
-    select.appendChild(option5)
+    select.appendChild(option0.option())
+    select.appendChild(option1.option())
+    select.appendChild(option2.option())
+    select.appendChild(option3.option())
+    select.appendChild(option4.option())
+    select.appendChild(option5.option())
+
 }
 
 /** Node Creator **/
@@ -489,6 +474,28 @@ const createRadio = (name, number, numeral, childOf) => {
     p.appendChild(label)
     label.appendChild(radioNode)
     label.appendChild(span)
+}
+
+const createButton = (name, id) => {
+    const btn = document.createElement('button')
+    btn.id = id
+    btn.innerText = name
+
+    return btn
+}
+
+class Option {
+    constructor (value, text) {
+        this.value = value,
+        this.text = text
+    }
+
+    option () {
+        const option = document.createElement('option')
+        option.value = this.value
+        option.innerText = this.text
+        return option
+    }
 }
 
 /** Start Up**/
