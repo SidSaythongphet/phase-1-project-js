@@ -4,20 +4,23 @@ let count = parseInt(startCount) * 60
 const BASE_URL = 'http://localhost:3000'
 let entries = []
 
-
 /** Node Getters**/
 const navList = () => Array.from(document.querySelectorAll('ul#nav li'))
-const mainBody = () => document.querySelector('body')
-const mainDiv = () => document.getElementById('main')
-const mainLeft = () => document.querySelector('.col.l7')
-const mainRight = () => document.querySelector('.col.l5')
-const secondDiv = () => document.getElementById('second')
 const homeLink = () => document.getElementById('home-link')
 const journalLink = () => document.getElementById('journal-link')
 const entriesLink = () => document.getElementById('entries-link')
-const leftSection = () => document.getElementById('secondLeft')
-const middleSection = () => document.getElementById('secondMiddle')
-const rightSection = () => document.getElementById('secondRight')
+
+const mainBody = () => document.querySelector('body')
+
+const mainDiv = () => document.getElementById('main')
+const mainLeft = () => document.getElementById('main-left')
+const mainRight = () => document.getElementById('main-right')
+
+const secondDiv = () => document.getElementById('second')
+const leftSection = () => document.getElementById('second-div-left')
+const middleSection = () => document.getElementById('second-div-middle')
+const rightSection = () => document.getElementById('second-div-right')
+
 const dropdown = () => document.querySelector('.browser-default')
 const promptOne = () => document.getElementById('optOne')
 const promptTwo = () => document.getElementById('optTwo')
@@ -25,12 +28,14 @@ const promptThree = () => document.getElementById('optThree')
 const promptFour = () => document.getElementById('optFour')
 const promptFive = () => document.getElementById('optFive')
 const promptSix = () => document.getElementById('optSix')
-const entryLabel = () => document.getElementById('entry-label')
+
 const radioOne = () => document.querySelector('input#one')
 const radioTwo = () => document.querySelector('input#two')
 const radioFive = () => document.querySelector('input#five')
 const radioTen = () => document.querySelector('input#ten')
-const textBox = () => document.getElementById('entry')
+
+const textBox = () => document.getElementById('entry-text')
+const entryLabel = () => document.getElementById('entry-label')
 const entryForm = () => document.getElementById('entry-form')
 const submit = () => document.getElementById('submit')
 const reset = () => document.getElementById('reset')
@@ -68,6 +73,28 @@ const radioEvent = () => {
     }
 }
 
+const activateLinkTagEvent = () => {
+    const [home, journal, entries] = navList()
+    for (let link of navList()) {
+        link.addEventListener('click', (event) => {
+            navList().forEach(link => link.className = '')
+            event.currentTarget.className = 'active'
+            if (event.currentTarget === home) {
+                journal.className = ''
+                entries.className = ''
+            } else if (event.currentTarget === journal) {
+                home.className = ''
+                entries.className = ''
+            } else if (event.currentTarget === entries) {
+                 home.className = ''
+                journal.className = ''
+            } else {
+                 return false
+            }
+        })
+    }
+}
+
 /** Event Handlers**/
 
 const loadHome = (event) => {
@@ -77,20 +104,27 @@ const loadHome = (event) => {
     clearDivs()
     createLayout(secondDiv())
     const h1 = document.createElement('h1')
-    const p = document.createElement('p')
+    const br1 = document.createElement('br')
+    const br2 = document.createElement('br')
+
     h1.innerText = 'Two Minutes A Day Journal'
-    p.innerText = 'The Two-Minute Rule states “When you start a new habit, it should take less than two minutes to do.”'
-    p.className = 'center-align'
+    
+    const p1 = createParagraph('The Two-Minute Rule states “When you start a new habit, it should take less than two minutes to do.”')
+    p1.className = 'center-align'
+    p1.style = 'font-weight: bold'
 
+    const p2 = createParagraph('Welcome to Two Minutes a Day, your very own journal which will allow you the freedom to express your thoughts in a few short minutes. With a build in timer, this journal will help you create your daily habit of journaling, making sure you do not feel like you have to write for too long. If the thought of starting to journal seems daunting, this is a perfect way to start. The time restriction allows you just enough time to express your thoughts but as you build this routine, you\'ll be wishing for more time!')
+    p2.className = 'container'
     mainDiv().appendChild(h1)
-    middleSection().appendChild(p)
-
+    middleSection().appendChild(p1)
+    middleSection().appendChild(br1)
+    middleSection().appendChild(p2)
 }
 
 const loadJournal = (event) => {
     event.preventDefault()
     clearDivs()
-    journalMain()
+    journalMainDiv()
     journalPrompt()
     durationRadio()
     renderJournalBox()
@@ -120,7 +154,6 @@ const startCountDown = (event) => {
 
 const submitJournalLog = (event) => {
     event.preventDefault()
-
     const newEntry = {
         "entryDate": fullDate(),
         "log": textBox().value,
@@ -128,7 +161,6 @@ const submitJournalLog = (event) => {
         "prompt": entryForm().value,
         "id": ''
     }
-    console.log(newEntry)
     
     fetch(BASE_URL + '/entries', {
         method: "POST",
@@ -157,26 +189,18 @@ const loadJournalLogs = () => {
 
 /** Miscellaneous**/
 
-const activateLinkTag = () => {
-    const [home, journal, entries] = navList()
-    for (let link of navList()) {
-        link.addEventListener('click', (event) => {
-            navList().forEach(link => link.className = '')
-            event.currentTarget.className = 'active'
-            if (event.currentTarget === home) {
-                journal.className = ''
-                entries.className = ''
-            } else if (event.currentTarget === journal) {
-                home.className = ''
-                entries.className = ''
-            } else if (event.currentTarget === entries) {
-                 home.className = ''
-                journal.className = ''
-            } else {
-                 return false
-            }
-        })
-    }
+const clearDivs = () => {
+    mainDiv().innerHTML = ''
+    secondDiv().innerHTML = ''
+}
+
+const createLayout = (parent) => {
+    const leftColumn = createSection('second-div-left', 'col s12 m1 l2')
+    const middleColumn = createSection('second-div-middle', 'col s12 m10 l8')
+    const rightColumn = createSection('second-div-right', 'col s12 m1 l2')
+    parent.appendChild(leftColumn)
+    parent.appendChild(middleColumn)
+    parent.appendChild(rightColumn)
 }
 
 const expandEntries = () => {
@@ -189,58 +213,30 @@ const expandEntries = () => {
     })
 }
 
-const clearDivs = () => {
-    mainDiv().innerHTML = ''
-    secondDiv().innerHTML = ''
-}
-
-const createLayout = (parent) => {
-    const leftColumn = document.createElement('section')
-    const middleColumn = document.createElement('section')
-    const rightColumn = document.createElement('section')
-
-    leftColumn.setAttribute('class', 'col s12 m4 l2')
-    leftColumn.id = 'secondLeft'
-    middleColumn.setAttribute('class', 'col s12 m4 l8')
-    middleColumn.id = 'secondMiddle'
-    rightColumn.setAttribute('class', 'col s12 m4 l2')
-    rightColumn.id = 'secondRight'
-
-    parent.appendChild(leftColumn)
-    parent.appendChild(middleColumn)
-    parent.appendChild(rightColumn)
-}
-
 const renderJournalBox = () => {
     const form = document.createElement('form')
-    const today = document.createElement('h5')
-    const label = document.createElement('label')
-    const journalBox = document.createElement('textarea')
-
-    form.setAttribute('name', 'entry')
+    form.name = 'entry'
     form.id = 'entry-form'
-    form.setAttribute('method', 'post')
-
+    form.method = 'POST'
+    const today = document.createElement('h5')
+    today.id = 'today'
+    today.innerText = fullDate()
+    const label = document.createElement('label')
+    label.htmlFor = 'entry'
+    label.style = 'padding-left: 5%'
+    label.id = 'entry-label'
+    label.innerText = 'Your journal entry:'
+    const textarea = document.createElement('textarea')
+    textarea.id = 'entry-text'
+    textarea.name = 'entry'
+    textarea.placeholder = 'Press \'Start\' to begin writing...'
+    textarea.disabled = 'true'
     const submit = createButton('Submit', 'submit')
     submit.type = 'submit'
     submit.name = 'entry'
     submit.hidden = 'true'
-    
     const reset = createButton('Reset', 'reset')
     reset.hidden = 'true'
-    
-    today.setAttribute('id', 'today')
-    today.innerText = fullDate()
-    
-    label.setAttribute('for', 'entry')
-    label.setAttribute('style', 'padding-left: 5%')
-    label.id = 'entry-label'
-    label.innerText = 'What is on your mind?'
-    
-    journalBox.setAttribute('id', 'entry')
-    journalBox.setAttribute('name', 'entry')
-    journalBox.setAttribute('placeholder', 'Press \'Start\' to begin writing...')
-    journalBox.setAttribute('disabled', 'true')
     
     secondDiv().appendChild(form)
     createLayout(form)
@@ -248,7 +244,7 @@ const renderJournalBox = () => {
     rightSection().appendChild(reset)
     middleSection().appendChild(today)
     middleSection().appendChild(label)
-    middleSection().appendChild(journalBox)    
+    middleSection().appendChild(textarea)    
     leftSection().appendChild(submit)
     rightSection().appendChild(reset)
     
@@ -258,16 +254,16 @@ const renderJournalBox = () => {
 
 const renderEntriesHeader = () => {
     const entryHeader = document.createElement('h2')   
-    entryHeader.setAttribute('class', 'center')
+    entryHeader.className = 'center'
     entryHeader.innerText = 'Past Entries'    
     mainDiv().appendChild(entryHeader)    
 }
 
 const renderPastEntryContainer = () => {
     const entryContainer = document.createElement('ul')
-    entryContainer.setAttribute('class', 'collapsible expandable')
+    entryContainer.className = 'collapsible expandable'
     middleSection().appendChild(entryContainer)
-    middleSection().setAttribute('style', 'background:none')
+    middleSection().style = 'background:none'
 }
 
 const loadPastEntry = () => {
@@ -301,41 +297,37 @@ const loadPastEntry = () => {
 
 const renderMonthsContainer = () => {
     const monthHeader = document.createElement('h4')
-    monthHeader.setAttribute('id', 'month-header')
-    leftSection().setAttribute('class', 'collection col l2')
-    leftSection().setAttribute('style', 'border: none')
+    monthHeader.id = 'month-header'
     monthHeader.innerText = 'Entry by Month'
+    leftSection().className = 'collection col l2'
+    leftSection().style = 'border: none'
     leftSection().appendChild(monthHeader)
 
-    const monthCollection = document.querySelectorAll('a.collection-item')
-    const monthCollectionArray = Array.from(monthCollection)
-    const monthCollectionArrayText = [""]
-    monthCollectionArray.map((ar) => {
+    const monthCollection = Array.from(document.querySelectorAll('a.collection-item'))
+    const monthCollectionText = [""]
+    monthCollection.map((ar) => {
         const innerText = ar.innerText
-        monthCollectionArrayText.push(innerText)
+        monthCollectionText.push(innerText)
     })
     
-    let JournalMonths = []
+    let journalMonths = []
     entries.forEach(entry => {
         let splitDate = entry.entryDate.split(' ')
         splitDate.splice(2,1)
         splitDate.shift()
         let monthYear = splitDate.join(' ')
-        JournalMonths.push(monthYear)
+        journalMonths.push(monthYear)
     })
-    console.log(JournalMonths)
-    console.log(entries.id)
-    let uniqueMonths = JournalMonths.filter((month, index) => {
-        return JournalMonths.indexOf(month) === index;
-    });
+
+    let uniqueMonths = journalMonths.filter((month, index) => journalMonths.indexOf(month) === index)
 
     let uniqueReverse = uniqueMonths.reverse()
     uniqueReverse.forEach(month => {
-        for(let monthArray of monthCollectionArrayText) {
+        for(let monthArray of monthCollectionText) {
             if (month !== monthArray) {
                 const a = document.createElement('a')
-                a.setAttribute('href', '#')
-                a.setAttribute('class', 'collection-item')
+                a.href = '#'
+                a.className = 'collection-item'
                 a.innerText = `${month}`
                 leftSection().appendChild(a)   
             } else {
@@ -362,15 +354,13 @@ const renderMonthsContainer = () => {
 
 const fullDate = () => {
     let today = new Date();
-    return today.toLocaleDateString('en-us', { weekday:"long", year:"numeric", month:"long", day:"numeric"}) 
+    return today.toLocaleDateString('en-us', {weekday:"long", year:"numeric", month:"long", day:"numeric"}) 
 }
 
 const countDown = () => {
     const minutes = Math.floor(count / 60)
     let seconds = count % 60
-
     seconds = seconds < 10 ? '0' + seconds : seconds
-
     setTimeout(() => {
         if (count > 0) {
             count--
@@ -379,10 +369,10 @@ const countDown = () => {
         } else {
             mainDiv().innerHTML = ''
             mainDiv().innerHTML = `<h3>Well done! You journaled for ${startCount} minute(s)!`
-            textBox().setAttribute('disabled', 'true')
-            submit().removeAttribute('hidden', 'true')
+            textBox().disabled = 'true'
+            submit().hidden = 'true'
             submit().className = 'right btn'
-            reset().removeAttribute('hidden', 'true')
+            reset().hidden = 'true'
             reset().className = 'left btn'
         }
     }, 1000);
@@ -390,17 +380,13 @@ const countDown = () => {
 
 const durationRadio = () => {
     const h5 = document.createElement('h5')
-
-    h5.setAttribute('class', 'left')
+    h5.className = 'left'
     h5.innerText = 'Set duration to write:'
-
     mainRight().appendChild(h5)
-
-    const radioLeft = createSection(mainRight())
-    radioLeft.setAttribute('class', 'left col l6')
-    const radioRight = createSection(mainRight())
-    radioRight.setAttribute('class', 'right col l6')
-
+    const radioLeft = createSection('radio-left', 'left col s6 m6 l6')
+    const radioRight = createSection('radio-right', 'left col s6 m6 l6') 
+    mainRight().appendChild(radioLeft)
+    mainRight().appendChild(radioRight)
     createRadio('duration', 'one', 1, radioLeft)
     createRadio('duration', 'two', 2, radioLeft)
     createRadio('duration', 'five', 5, radioRight)
@@ -412,8 +398,8 @@ const durationRadio = () => {
 
 const renderTimer = () => {
     const timer = document.createElement('h2')
-    timer.setAttribute('id', 'counter')
-    timer.setAttribute('class', 'center')
+    timer.id = 'counter'
+    timer.className = 'center'
     timer.innerText = startCount + ':00'
     mainRight().innerHTML = ''
     mainRight().appendChild(timer)
@@ -426,42 +412,33 @@ const displayCount = () => {
 const renderStart = () => {
     const start = createButton('Start', 'start')
     start.type = 'submit'
-    start.setAttribute('class', 'right btn')
-
+    start.className = 'right btn'
     return start
 }
 
-const journalMain = () => {
+const journalMainDiv = () => {
     const form = document.createElement('form')
-    const left = document.createElement('section')
-    const right = document.createElement('section')
-
-    mainDiv().appendChild(form)
     form.name = 'prompt'
-    form.setAttribute('class', 'row')
-    form.setAttribute('action', '#')
-
-    left.setAttribute('class', 'col l7')
-    right.setAttribute('class', 'col l5')
-
-    form.appendChild(left)
-    form.appendChild(right)
+    form.className = 'row'
+    form.action = '#'
+    const leftSection = createSection('main-left', 'col s4 m6 l7')
+    const rightSection = createSection('main-right', 'col s4 m6 l5')
+    mainDiv().appendChild(form)
+    form.appendChild(leftSection)
+    form.appendChild(rightSection)
 }
 
 const journalPrompt = () => {
     const h5 = document.createElement('h5')
     const select = document.createElement('select')
-
     h5.innerText = "Today's topic is..."
-    select.setAttribute('class', 'browser-default')
-
+    select.className = 'browser-default'
     const option1 = new Option('optOne', 'Whatever is on my mind!')
     const option2 = new Option('optTwo','What am I most grateful for today?')
     const option3 = new Option('optThree','What am I looking forward to in the coming days?')
     const option4 = new Option('optFour','What is one thing that I want to accomplish or have accomplished today?')
     const option5 = new Option('optFive','What am I doing today to take care of myself?')
     const option6 = new Option('optSix','Where do I see myself in 6 months?')
-
     mainLeft().appendChild(h5)
     mainLeft().appendChild(select)
     select.appendChild(option1.option())
@@ -496,20 +473,19 @@ const createPastEntry = (entry) => {
     const log = document.createElement('p')
     const deleteBtn = createButton('Delete', 'delete')
 
-    header.setAttribute('class', 'collapsible-header')
-    date.setAttribute('style', 'margin-left: 0')
+    header.className = 'collapsible-header'
+    date.style = 'margin-left: 0'
     date.innerText = entry.entryDate
-    duration.setAttribute('style', 'margin-right: 25px')
+    duration.style = 'margin-right: 25px'
     duration.innerText = entry.duration
-    body.setAttribute('class', 'collapsible-body')
+    body.className = 'collapsible-body'
     prompt.innerHTML = `<strong>${entry.prompt}</strong>`
-    line.setAttribute('style', 'border-top: 2px solid teal')
+    line.style = 'border-top: 2px solid teal'
     log.innerText = entry.log + '...'
     deleteBtn.className = 'delete btn'
     deleteBtn.id = entry.id
     deleteBtn.style = 'margin-top: 5%'
     
-
     pastEntryContainer().appendChild(li)
     li.appendChild(header)
     header.appendChild(date)
@@ -522,13 +498,14 @@ const createPastEntry = (entry) => {
 }
 /** Node Creator **/
 
-const createSection = (childOf) => {
+const createSection = (id, className) => {
     const section = document.createElement('section')
-
-    return childOf.appendChild(section)
+    section.id = id
+    section.className = className
+    return section
 }
 
-const createRadio = (name, number, numeral, childOf) => {
+const createRadio = (name, number, numeral, parent) => {
     const radioNode = document.createElement('input')
     const p = document.createElement('p')
     const label = document.createElement('label')
@@ -541,7 +518,7 @@ const createRadio = (name, number, numeral, childOf) => {
     label.htmlFor = number
     span.innerText = `${numeral} minute(s)`
 
-    childOf.appendChild(p)
+    parent.appendChild(p)
     p.appendChild(label)
     label.appendChild(radioNode)
     label.appendChild(span)
@@ -551,7 +528,6 @@ const createButton = (name, id) => {
     const btn = document.createElement('button')
     btn.id = id
     btn.innerText = name
-
     return btn
 }
 
@@ -561,7 +537,6 @@ class Option {
         this.id = id
         this.text = text
     }
-
     option () {
         const option = document.createElement('option')
         option.value = this.value
@@ -585,6 +560,6 @@ document.addEventListener('DOMContentLoaded', () => {
     homePageEvent()
     jouralPageEvent()
     entriesPageEvent()
-    activateLinkTag()
+    activateLinkTagEvent()
 })
 

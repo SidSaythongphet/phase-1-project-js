@@ -21,20 +21,9 @@ body {
 }
 
 #second {
-    
     margin-top: 85px;
     margin: 50px;
-    
 }
-
-/** Journal Page**/
-/* #start {
-    margin-left: 100px;
-    margin-bottom: 100px;
-    font-size: 50px;
-    border-width: thick;
-    text-align: center;
-} */
 
 #today {
     margin-top: 35px;
@@ -94,14 +83,7 @@ textarea {
     color: black;
 }
 
-/* .collection.col.s2 {
-    padding-right: 100px;
-    padding-left: 50px;
-    padding-top: 25px;
-    border: none;
-} */
-
-.col.s12.m4.l8 {
+.col.s12.m10.l8 {
     background-image: url('https://i.pinimg.com/originals/84/f8/5a/84f85a08ac3eee7f305af97d0fc700df.jpg');
     background-repeat: no-repeat;
     background-size: cover;
@@ -117,9 +99,3 @@ section p {
 label {
     color: black;
 }
-
-/* .left {
-    margin-left: 0;
-}
-
-.right {} */
