@@ -104,21 +104,20 @@ const loadHome = (event) => {
     clearDivs()
     createLayout(secondDiv())
     const h1 = document.createElement('h1')
+    h1.innerText = 'Two Minutes A Day Journal'
     const br1 = document.createElement('br')
     const br2 = document.createElement('br')
-
-    h1.innerText = 'Two Minutes A Day Journal'
-    
     const p1 = createParagraph('The Two-Minute Rule states “When you start a new habit, it should take less than two minutes to do.”')
     p1.className = 'center-align'
-    p1.style = 'font-weight: bold'
-
-    const p2 = createParagraph('Welcome to Two Minutes a Day, your very own journal which will allow you the freedom to express your thoughts in a few short minutes. With a build in timer, this journal will help you create your daily habit of journaling, making sure you do not feel like you have to write for too long. If the thought of starting to journal seems daunting, this is a perfect way to start. The time restriction allows you just enough time to express your thoughts but as you build this routine, you\'ll be wishing for more time!')
+    p1.style = 'font-weight: bold; margin-top: 9%; font-size: large'
+    const p2 = createParagraph('Welcome to Two Minutes a Day, your very own journal which will allow you the freedom to express your thoughts in a few short minutes. With a build in timer, this journal will help you create your daily habit of journaling, making sure you do not feel like you have to write for too long. If the thought of starting to journal seems daunting, this is a perfect way to start. The time restriction allows you just enough time to express your thoughts but as you build this routine, you\'ll be wishing for more time! So, let\'s begin!')
     p2.className = 'container'
+    p2.style = 'line-height: 175%; font-size: medium'
     mainDiv().appendChild(h1)
     middleSection().appendChild(p1)
     middleSection().appendChild(br1)
     middleSection().appendChild(p2)
+    middleSection().appendChild(br2)
 }
 
 const loadJournal = (event) => {
