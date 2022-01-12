@@ -269,7 +269,6 @@ const loadPastEntry = () => {
     let reverseEntries = [...entries].reverse()
     reverseEntries.forEach(entry => createPastEntry(entry))
     expandEntries()
-
     const deleteEntry = (event) => {
         fetch(BASE_URL + '/entries/' + `${event.target.id}`, {
             method: "DELETE",
@@ -284,13 +283,11 @@ const loadPastEntry = () => {
             loadEntries()
         })
     }
-
     const deleteEvent = () => {
         for ( let btn of deleteBtns()) {
             btn.addEventListener('click', deleteEntry)
         }
     }
-
     deleteEvent()
 }
 
@@ -302,6 +299,7 @@ const renderMonthsContainer = () => {
     leftSection().style = 'border: none'
     leftSection().appendChild(monthHeader)
 
+    // Collect the array of months 
     const monthCollection = Array.from(document.querySelectorAll('a.collection-item'))
     const monthCollectionText = [""]
     monthCollection.map((ar) => {
@@ -309,6 +307,7 @@ const renderMonthsContainer = () => {
         monthCollectionText.push(innerText)
     })
     
+    // Get the Month and Year value from the json data in order to compare them against month array
     let journalMonths = []
     entries.forEach(entry => {
         let splitDate = entry.entryDate.split(' ')
@@ -318,8 +317,10 @@ const renderMonthsContainer = () => {
         journalMonths.push(monthYear)
     })
 
+    // Remove duplicate months from entries
     let uniqueMonths = journalMonths.filter((month, index) => journalMonths.indexOf(month) === index)
 
+    // Compare the entries json data, using the Month and Year, against the month/year collection list
     let uniqueReverse = uniqueMonths.reverse()
     uniqueReverse.forEach(month => {
         for(let monthArray of monthCollectionText) {

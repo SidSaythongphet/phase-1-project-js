@@ -1,32 +1,60 @@
 {
   "entries": [
     {
-      "entryDate": "Tuesday, November 11, 2021",
-      "log": "Tester to show new month.",
+      "entryDate": "Friday, November 12, 2021",
+      "log": "This is great! I want to start journaling. I hope to do everyday to build a habit in writing",
       "duration": "1 minute(s)",
-      "prompt": "",
+      "prompt": "Whatever is on my mind!",
       "id": 1
     },
     {
-      "entryDate": "Tuesday, December 11, 2021",
-      "log": "Tester to show new month.",
+      "entryDate": "Saturday, November 13, 2021",
+      "log": "I want to start thinking of a new career path. With the new year coming, I'd love to start the new year doing something I love!",
       "duration": "1 minute(s)",
-      "prompt": "",
+      "prompt": "Whatever is on my mind!",
       "id": 2
     },
     {
-      "entryDate": "Tuesday, January 11, 2022",
-      "log": "Today I start making a habit of writing everyday for at least two minutes. I may not know what to write all the time, but with a set time, I can just write whatever I want. It is the act of setting this time to write that is important in the beginning. not necessarily the content. So I intent to keep up with this journal everyda",
+      "entryDate": "Tuesday, November 23, 2021",
+      "log": "Today I have my orientation for the Flatiron School to begin the Flex Software Engineer Bootcap. I am super excited to start next month. I have been working on all the Prework assignments this week.",
       "duration": "2 minute(s)",
       "prompt": "Whatever is on my mind!",
       "id": 3
     },
     {
-      "entryDate": "Tuesday, February 11, 2022",
-      "log": "Today I start making a habit of writing everyday for at least two minutes. I may not know what to write all the time, but with a set time, I can just write whatever I want. It is the act of setting this time to write that is important in the beginning. not necessarily the content. So I intent to keep up with this journal everyda",
+      "entryDate": "Monday, December 6, 2021",
+      "log": "Christmas is in less than a month! What will I get my boyfriend for his gift? We have very little time until we leave for his family's home upstate. What will I do?",
       "duration": "2 minute(s)",
       "prompt": "Whatever is on my mind!",
-      "id": 3
+      "id": 4
+    },
+    {
+      "entryDate": "Monday, December 13, 2021",
+      "log": "Today is the first day for the Flex SE Program at Flatiron. I am super excited to jump into my coursework. I am set for the 40 week pace, but would love to be ahead of that and maybe aim for the 20 week program. It all depends on my schedule though. With the holiday, I have so much time but my January work schedule looks busy.",
+      "duration": "2 minute(s)",
+      "prompt": "Whatever is on my mind!",
+      "id": 5
+    },
+    {
+      "entryDate": "Tuesday, December 14, 2021",
+      "log": "I see myself working for a company and not be living paycheck to paycheck. I hope to have a steady income and to be in a better place finacially!",
+      "duration": "2 minute(s)",
+      "prompt": "Where do I see myself in 6 months?",
+      "id": 6
+    },
+    {
+      "entryDate": "Thursday, December 16, 2021",
+      "log": "I am looking forward to a nice week away from the city. To be able to let Theodore outside to play with fresh snow that isnt the slushy mess that we get in NYC. I am looking forward to time with family and to just relax. For Christmas. For New Years.",
+      "duration": "2 minute(s)",
+      "prompt": "What am I looking forward to in the coming days?",
+      "id": 7
+    },
+    {
+      "entryDate": "Friday, December 17, 2021",
+      "log": "I am so grateful for my family. I am excited to see them next week for the holidays. Work and bootcamp has been tough but im so grateful for their support.",
+      "duration": "2 minute(s)",
+      "prompt": "What am I most grateful for today?",
+      "id": 8
     }
   ]
 }
