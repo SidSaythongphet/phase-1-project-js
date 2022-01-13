@@ -5,66 +5,25 @@ const BASE_URL = 'http://localhost:3000'
 let entries = []
 
 /** Node Getters**/
-const navList = () => Array.from(document.querySelectorAll('ul#nav li'))
-const homeLink = () => document.getElementById('home-link')
-const journalLink = () => document.getElementById('journal-link')
-const entriesLink = () => document.getElementById('entries-link')
-
-const mainBody = () => document.querySelector('body')
-
 const mainDiv = () => document.getElementById('main')
 const mainLeft = () => document.getElementById('main-left')
 const mainRight = () => document.getElementById('main-right')
-
 const secondDiv = () => document.getElementById('second')
 const leftSection = () => document.getElementById('second-div-left')
 const middleSection = () => document.getElementById('second-div-middle')
-const rightSection = () => document.getElementById('second-div-right')
-
-const dropdown = () => document.querySelector('.browser-default')
-const promptOne = () => document.getElementById('optOne')
-const promptTwo = () => document.getElementById('optTwo')
-const promptThree = () => document.getElementById('optThree')
-const promptFour = () => document.getElementById('optFour')
-const promptFive = () => document.getElementById('optFive')
-const promptSix = () => document.getElementById('optSix')
-
-const radioOne = () => document.querySelector('input#one')
-const radioTwo = () => document.querySelector('input#two')
-const radioFive = () => document.querySelector('input#five')
-const radioTen = () => document.querySelector('input#ten')
-
 const textBox = () => document.getElementById('entry-text')
-const entryLabel = () => document.getElementById('entry-label')
 const entryForm = () => document.getElementById('entry-form')
-const submit = () => document.getElementById('submit')
-const reset = () => document.getElementById('reset')
-const timer = () => document.getElementById('counter')
-const start = () => document.getElementById('start')
-const pastEntryContainer = () => document.querySelector('.collapsible.expandable')
-const deleteBtns = () => Array.from(document.querySelectorAll('.delete.btn'))
-const monthLink = () => Array.from(document.querySelectorAll('.collection-item'))
 
 /** Event Listners**/
 
-const homePageEvent = () => {
-    homeLink().addEventListener('click', loadHome)
-}
+const homePageEvent = () => document.getElementById('home-link').addEventListener('click', loadHome)
+const jouralPageEvent = () => document.getElementById('journal-link').addEventListener('click', loadJournal)
+const entriesPageEvent = () => document.getElementById('entries-link').addEventListener('click', loadEntries)
 
-const jouralPageEvent = () => {
-    journalLink().addEventListener('click', loadJournal)
-}
-
-const entriesPageEvent = () => {
-    entriesLink().addEventListener('click', loadEntries)
-}
-
-const startEvent = () => {
-    start().addEventListener('click', startCountDown)
-}
+const startEvent = () => document.getElementById('start').addEventListener('click', startCountDown)
 
 const radioEvent = () => {
-    const radioArray = [radioOne(), radioTwo(), radioFive(), radioTen()]
+    const radioArray = Array.from(document.querySelectorAll('input'))
     for (let radio of radioArray) {
         radio.addEventListener('click', () => {
             startCount = radio.value
@@ -74,10 +33,11 @@ const radioEvent = () => {
 }
 
 const activateLinkTagEvent = () => {
-    const [home, journal, entries] = navList()
-    for (let link of navList()) {
+    const navList = Array.from(document.querySelectorAll('ul#nav li'))
+    const [home, journal, entries] = navList
+    for (let link of navList) {
         link.addEventListener('click', (event) => {
-            navList().forEach(link => link.className = '')
+            navList.forEach(link => link.className = '')
             event.currentTarget.className = 'active'
             if (event.currentTarget === home) {
                 journal.className = ''
@@ -98,11 +58,8 @@ const activateLinkTagEvent = () => {
 /** Event Handlers**/
 
 const loadHome = (event) => {
-    if(event) {
-        event.preventDefault()
-    }
     clearDivs()
-    createLayout(secondDiv())
+    createSecondDivLayout(secondDiv())
     const h1 = document.createElement('h1')
     h1.innerText = 'Two Minutes A Day Journal'
     const br1 = document.createElement('br')
@@ -135,7 +92,7 @@ const loadEntries = (event) => {
         event.preventDefault()
     }
     clearDivs()
-    createLayout(secondDiv())
+    createSecondDivLayout(secondDiv())
     renderEntriesHeader()
     renderPastEntryContainer()
     renderMonthsContainer()
@@ -143,11 +100,10 @@ const loadEntries = (event) => {
 }
 
 const startCountDown = (event) => {
-    event.preventDefault()
     renderTimer()
     disableDropdown()
     textBox().removeAttribute('disabled', 'true')
-    start().remove()
+    document.getElementById('start').remove()
     countDown() 
 }
 
@@ -193,7 +149,7 @@ const clearDivs = () => {
     secondDiv().innerHTML = ''
 }
 
-const createLayout = (parent) => {
+const createSecondDivLayout = (parent) => {
     const leftColumn = createSection('second-div-left', 'col s12 m1 l2')
     const middleColumn = createSection('second-div-middle', 'col s12 m10 l8')
     const rightColumn = createSection('second-div-right', 'col s12 m1 l2')
@@ -234,11 +190,12 @@ const renderJournalBox = () => {
     submit.type = 'submit'
     submit.name = 'entry'
     submit.hidden = 'true'
+    const rightSection = () => document.getElementById('second-div-right')
     const reset = createButton('Reset', 'reset')
     reset.hidden = 'true'
     
     secondDiv().appendChild(form)
-    createLayout(form)
+    createSecondDivLayout(form)
     leftSection().appendChild(submit)
     rightSection().appendChild(reset)
     middleSection().appendChild(today)
@@ -284,6 +241,7 @@ const loadPastEntry = () => {
         })
     }
     const deleteEvent = () => {
+        const deleteBtns = () => Array.from(document.querySelectorAll('.delete.btn'))
         for ( let btn of deleteBtns()) {
             btn.addEventListener('click', deleteEntry)
         }
@@ -337,7 +295,7 @@ const renderMonthsContainer = () => {
     })
     
     const loadMonth = (event) => {
-        pastEntryContainer().innerHTML = ' '
+        document.querySelector('.collapsible.expandable').innerHTML = ' '
         let filteredEntries = []
         let [month, year] = event.target.innerText.split(' ')
         filteredEntries = entries.filter(entry => entry.entryDate.includes(month) && entry.entryDate.includes(year))
@@ -345,6 +303,7 @@ const renderMonthsContainer = () => {
     }
 
     const monthLinkEvent = () => {
+        const monthLink = () => Array.from(document.querySelectorAll('.collection-item'))
         for (let link of monthLink()) {
             link.addEventListener('click', loadMonth)
         }
@@ -362,18 +321,20 @@ const countDown = () => {
     let seconds = count % 60
     seconds = seconds < 10 ? '0' + seconds : seconds
     setTimeout(() => {
+        const submit = document.getElementById('submit')
+        const reset = document.getElementById('reset')
         if (count > 0) {
             count--
-            timer().innerText = `${minutes}:${seconds}`
+            document.getElementById('counter').innerText = `${minutes}:${seconds}`
             countDown()
         } else {
             mainDiv().innerHTML = ''
             mainDiv().innerHTML = `<h3>Well done! You journaled for ${startCount} minute(s)!`
             textBox().disabled = 'true'
-            submit().hidden = 'true'
-            submit().className = 'right btn'
-            reset().hidden = 'true'
-            reset().className = 'left btn'
+            submit.hidden = 'true'
+            submit.className = 'right btn'
+            reset.hidden = 'true'
+            reset.className = 'left btn'
         }
     }, 1000);
 }
@@ -391,8 +352,8 @@ const durationRadio = () => {
     createRadio('duration', 'two', 2, radioLeft)
     createRadio('duration', 'five', 5, radioRight)
     createRadio('duration', 'ten', 10, radioRight)
-    radioTwo().checked = 'checked'
     mainLeft().appendChild(renderStart())
+    document.querySelector('input#two').checked = 'checked'
     radioEvent()
 }
 
@@ -403,10 +364,6 @@ const renderTimer = () => {
     timer.innerText = startCount + ':00'
     mainRight().innerHTML = ''
     mainRight().appendChild(timer)
-}
-
-const displayCount = () => {
-    timer().innerText = `${minutes}:${seconds}`  
 }
 
 const renderStart = () => {
@@ -420,7 +377,7 @@ const journalMainDiv = () => {
     const form = document.createElement('form')
     form.name = 'prompt'
     form.className = 'row'
-    form.action = '#'
+    form.action = ' '
     const leftSection = createSection('main-left', 'col s4 m6 l7')
     const rightSection = createSection('main-right', 'col s4 m6 l5')
     mainDiv().appendChild(form)
@@ -447,19 +404,18 @@ const journalPrompt = () => {
     select.appendChild(option4.option())
     select.appendChild(option5.option())
     select.appendChild(option6.option())
-    promptOne().selected = "selected"
 }
 
 const disableDropdown = () => {
-    let selected = dropdown().value
+    const dropdown = document.querySelector('.browser-default')
     const selectedDisplay = document.createElement('p')
     selectedDisplay.id = 'selected-prompt'
     selectedDisplay.className = 'center'
-    selectedDisplay.innerText = `${selected}`
+    selectedDisplay.innerText = `${dropdown.value}`
 
     mainLeft().appendChild(selectedDisplay)
-    dropdown().remove()
-    entryForm().value = selected
+    dropdown.remove()
+    entryForm().value = dropdown.value
 }
 
 const createPastEntry = (entry) => {
@@ -486,7 +442,7 @@ const createPastEntry = (entry) => {
     deleteBtn.id = entry.id
     deleteBtn.style = 'margin-top: 5%'
     
-    pastEntryContainer().appendChild(li)
+    document.querySelector('.collapsible.expandable').appendChild(li)
     li.appendChild(header)
     header.appendChild(date)
     header.appendChild(duration)
@@ -496,6 +452,7 @@ const createPastEntry = (entry) => {
     body.appendChild(log)
     body.appendChild(deleteBtn)
 }
+
 /** Node Creator **/
 
 const createSection = (id, className) => {
